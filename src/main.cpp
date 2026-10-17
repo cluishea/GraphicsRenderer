@@ -3,6 +3,7 @@
 
 #include <Core/framebuffer.hpp>
 #include <Geometry/line.hpp>
+#include <Geometry/triangle.hpp>
 #include <Core/color.hpp>
 
 #include <iostream>
@@ -11,13 +12,14 @@ int main()
 {
 
     int width = 100, height = 100;
-    unsigned int scale = 8;
+    unsigned int scale = 4;
 
 
     gfx::FrameBuffer frame{width,height};
-    frame.Clear(gfx::Color{0,255,0,255});
+    frame.Clear(gfx::Color{255,255,255,255});
 
 
+    /*
     gfx::Line_i line0{gfx::Point2i{1,17},gfx::Point2i{54,64}};
     line0.RasterizeBresenham(frame,gfx::Color{255,0,0,255});
 
@@ -26,7 +28,12 @@ int main()
 
     gfx::Line_i line2{gfx::Point2i{92,12},gfx::Point2i{1,17}};
     line2.RasterizeBresenham(frame,gfx::Color{255,0,0,255});
-    
+    */
+
+    gfx::Triangle triangle = gfx::Triangle{gfx::Point2f{10,10}, gfx::Point2f{90,10}, gfx::Point2f{10,90}};
+    triangle.SetColor(std::vector<gfx::Color>{gfx::Color{255,0,0,255},gfx::Color{0,255,0,255},gfx::Color{0,0,255,255}});
+    triangle.Rasterize(frame,"interpolate");
+
     sf::RenderWindow window(
         sf::VideoMode({width*scale, height*scale}),
         "Renderer"

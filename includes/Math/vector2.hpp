@@ -8,36 +8,39 @@
 
 namespace gfx{
 
-    struct Vector2i
+    struct Vector2f
     {
         float x;
         float y;
 
-        Vector2i(float x_, float y_){
+        Vector2f(float x_, float y_){
             x = x_;
             y = y_;
         }
 
-        Vector2i(Point2i start, Point2i end){
+        Vector2f(Point2f start, Point2f end){
             x = end.x - start.x;
-            x = end.y - start.y;
+            y = end.y - start.y;
         }
 
-        Vector2i operator+(Vector2i other) const{
+        Vector2f operator+(Vector2f other) const{
             return {x+other.x, y+other.y};
         }  
 
-        Vector2i operator-(Vector2i other) const{
+        Vector2f operator-(Vector2f other) const{
             return {x-other.x, y-other.y};
         }  
 
-        Vector2i operator*(float scalar) const{
+        Vector2f operator*(float scalar) const{
             return {scalar*x,scalar*y};
         }
 
-        float Cross(Vector2i other) const{
-            return x * other.y - y * other.x;
+        Vector2f operator-() const{
+            return {-x,-y};
         }
 
+        float Cross(Vector2f other) const{
+            return x * other.y - y * other.x;
+        }
     };
 }
