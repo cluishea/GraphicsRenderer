@@ -31,11 +31,11 @@ int main()
     line2.RasterizeBresenham(frame,gfx::Color{255,0,0,255});
     */
 
-    /*gfx::Triangle triangle = gfx::Triangle{gfx::Point2f{10,10}, gfx::Point2f{90,10}, gfx::Point2f{10,90}};
+    gfx::Triangle triangle = gfx::Triangle{gfx::Point2f{10,10}, gfx::Point2f{90,10}, gfx::Point2f{10,90}};
     triangle.SetColor(std::vector<gfx::Color>{gfx::Color{255,0,0,255},gfx::Color{0,255,0,255},gfx::Color{255,0,0,0}});
     triangle.Rasterize(frame,"interpolate");
-    */
-
+    
+    
     sf::RenderWindow window(
         sf::VideoMode({width*scale, height*scale}),
         "Renderer"

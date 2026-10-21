@@ -3,6 +3,7 @@
 #include <Core/color.hpp>
 #include <Core/framebuffer.hpp>
 #include <Math/vector2.hpp>
+#include <Math/matrix3x3.hpp>
 #include <vector>
 #include <string>
 
@@ -42,6 +43,9 @@ public:
     // Rasterize the triangle (fill)
     // Modes = "solid" or "interpolate"
     void Rasterize(FrameBuffer& frameBuffer, std::string mode = "solid", Color fillColor = Color{0,0,0}) const;
+
+    // Apply the given transformation, input given as the transformation matrix
+    void ApplyTransform(Matrix3x3 transformMatrix);
 
     
 

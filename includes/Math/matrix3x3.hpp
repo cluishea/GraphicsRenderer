@@ -40,6 +40,7 @@ struct Matrix3x3 {
                 }
             }
         }
+        return Matrix3x3{result};
     }
 
     Vector3f operator*(Vector3f vec){
