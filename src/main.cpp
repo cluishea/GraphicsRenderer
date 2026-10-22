@@ -33,6 +33,10 @@ int main()
 
     gfx::Triangle triangle = gfx::Triangle{gfx::Point2f{10,10}, gfx::Point2f{90,10}, gfx::Point2f{10,90}};
     triangle.SetColor(std::vector<gfx::Color>{gfx::Color{255,0,0,255},gfx::Color{0,255,0,255},gfx::Color{255,0,0,0}});
+    
+     gfx::Matrix3x3 rotate45 = gfx::Matrix3x3::Rotate(30);
+     triangle.ApplyTransform(rotate45);
+
     triangle.Rasterize(frame,"interpolate");
     
     

@@ -89,6 +89,9 @@ void Triangle::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillC
         of least value the data type can hold. (It is not perfect for floats, so fixed floats are useful.).
         If pixel which is right on the non top or left edge has cross product 0, it is pushed to a negative value so not painted.
 
+        The function also allows interpolation of color, which is done through Barycentric coordinates, alpha, beta and gamma values, which is the fraction of area of triangle
+        held on the opposite side by the point.
+
 
     
     */
@@ -162,12 +165,13 @@ void Triangle::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillC
         w0_init += delta_w0_row;
         w1_init += delta_w1_row;
         w2_init += delta_w2_row;
-
     }
+}
 
-
-    
-
+void Triangle::ApplyTransform(Matrix3x3 transformation){
+    p0 = (Vector3f::Wrap2DPoint(p0)*transformation).Unwrap2DPoint();
+    p1 = (Vector3f::Wrap2DPoint(p1)*transformation).Unwrap2DPoint();
+    p2 = (Vector3f::Wrap2DPoint(p2)*transformation).Unwrap2DPoint();
 }
 
 

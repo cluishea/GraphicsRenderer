@@ -42,15 +42,6 @@ struct Matrix3x3 {
         }
         return Matrix3x3{result};
     }
-
-    Vector3f operator*(Vector3f vec){
-        return Vector3f{
-            vec.a[0]*a[0] + vec.a[1]*a[3] + vec.a[2]*a[6],
-            vec.a[0]*a[1] + vec.a[1]*a[4] + vec.a[2]*a[7],
-            vec.a[0]*a[2] + vec.a[1]*a[5] + vec.a[2]*a[8]
-        };
-    }
-
     
     // Translation functions implemented as homogenous coordinates
 
@@ -93,6 +84,14 @@ struct Matrix3x3 {
 
 
 };
+
+inline Vector3f operator*(Vector3f vec, Matrix3x3 mat){
+    return Vector3f{
+        vec.a[0]*mat.a[0] + vec.a[1]*mat.a[3] + vec.a[2]*mat.a[6],
+        vec.a[0]*mat.a[1] + vec.a[1]*mat.a[4] + vec.a[2]*mat.a[7],
+        vec.a[0]*mat.a[2] + vec.a[1]*mat.a[5] + vec.a[2]*mat.a[8]
+    };
+}
 
 
 

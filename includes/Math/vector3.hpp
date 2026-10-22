@@ -18,6 +18,12 @@ struct Vector3f{
         };
     }
 
+    Point2f Unwrap2DPoint() const{
+        return Point2f{
+            a[0], a[1]
+        };
+    }
+
 };
 
 }
