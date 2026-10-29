@@ -21,8 +21,8 @@ int main()
 
 
     /*
-    gfx::Line_i line0{gfx::Point2i{1,17},gfx::Point2i{54,64}};
-    line0.RasterizeBresenham(frame,gfx::Color{255,0,0,255});
+    gfx::Line_f line0{gfx::Point2f{40,40},gfx::Point2f{60,0}};
+    line0.RasterizeVECGEN(frame,gfx::Color{255,255,0,255});
 
     gfx::Line_i line1{gfx::Point2i{54,64},gfx::Point2i{92,12}};
     line1.RasterizeBresenham(frame,gfx::Color{255,0,0,255});
@@ -31,14 +31,15 @@ int main()
     line2.RasterizeBresenham(frame,gfx::Color{255,0,0,255});
     */
 
-    gfx::Triangle triangle = gfx::Triangle{gfx::Point2f{10,10}, gfx::Point2f{90,10}, gfx::Point2f{10,90}};
+    
+    gfx::Triangle triangle = gfx::Triangle{gfx::Point2f{10,10}, gfx::Point2f{78,10}, gfx::Point2f{10,90}};
     triangle.SetColor(std::vector<gfx::Color>{gfx::Color{255,0,0,255},gfx::Color{0,255,0,255},gfx::Color{255,0,0,0}});
     
-     gfx::Matrix3x3 rotate45 = gfx::Matrix3x3::Rotate(30);
-     triangle.ApplyTransform(rotate45);
+    //gfx::Matrix3x3 rotate45 = gfx::Matrix3x3::Rotate(3);
+    //triangle.ApplyTransform(rotate45);
 
-    triangle.Rasterize(frame,"interpolate");
-    
+    triangle.DrawEdges(frame);
+    //triangle.Rasterize(frame,"interpolate", gfx::Color{255,0,0});
     
     sf::RenderWindow window(
         sf::VideoMode({width*scale, height*scale}),

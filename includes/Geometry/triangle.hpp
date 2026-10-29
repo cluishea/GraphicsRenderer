@@ -44,6 +44,9 @@ public:
     // Modes = "solid" or "interpolate"
     void Rasterize(FrameBuffer& frameBuffer, std::string mode = "solid", Color fillColor = Color{0,0,0}) const;
 
+    // Draw the edges
+    void DrawEdges(FrameBuffer& FrameBuffer, Color lineColor = Color{0,0,0}) const;
+
     // Apply the given transformation, input given as the transformation matrix
     void ApplyTransform(Matrix3x3 transformMatrix);
 

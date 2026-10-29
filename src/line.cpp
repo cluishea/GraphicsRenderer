@@ -9,8 +9,8 @@ namespace gfx{
 
 Line_f::Line_f(Point2f startPoint, Point2f endPoint):start(startPoint),end(endPoint){}
 
-void Line_f::RasterizeVECGEN(FrameBuffer& frameBuffer, Color lineColor){
-    if(start.x < 0 || start.y < 0 || start.x >= frameBuffer.GetWidth() || start.y >= frameBuffer.GetHeight()){
+void Line_f::RasterizeVECGEN(FrameBuffer& frameBuffer, Color lineColor, bool rasterizeOutside){
+    if((start.x < 0 || start.y < 0 || start.x >= frameBuffer.GetWidth() || start.y >= frameBuffer.GetHeight()) && !rasterizeOutside){
         return;
     }
     
@@ -20,6 +20,10 @@ void Line_f::RasterizeVECGEN(FrameBuffer& frameBuffer, Color lineColor){
     // Components of the line in terms of vector
     float dx = end.x - start.x;
     float dy = end.y - start.y;
+
+    if(dx == 0.0 && dy == 0.0){     // INVALID case - Only really happens when both the start and end coords are the same
+        return;
+    }
 
     if(std::abs(dx) > std::abs(dy)){          // Gentle slope case (m<1)
 
@@ -71,9 +75,6 @@ void Line_f::RasterizeVECGEN(FrameBuffer& frameBuffer, Color lineColor){
     }
 
     else{               // Sharp slope case (m > 1)
-        if(dx == 0.0){     // INVALID case - Only really happens when both the start and end coords are the same
-            return;
-        }
 
         float m = dx / dy;
         int r,f;
@@ -89,7 +90,7 @@ void Line_f::RasterizeVECGEN(FrameBuffer& frameBuffer, Color lineColor){
             d = end.x + m * (r - end.y);
         }
         
-        float c = std::floor(r + 0.5);
+        float c = std::floor(d + 0.5);
         float w = m + (c-d);
 
         if(m>0){

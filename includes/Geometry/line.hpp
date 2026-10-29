@@ -14,7 +14,8 @@ private:
 public:
     Line_f(Point2f startPoint, Point2f endPoint);
 
-    void RasterizeVECGEN(FrameBuffer& frameBuffer,Color lineColor = Color{});
+    void RasterizeVECGEN(FrameBuffer& frameBuffer,Color lineColor = Color{}, bool rasterizeOutside = true);
+    // Do convert this to Bresenham rasterizer
 
 };
 

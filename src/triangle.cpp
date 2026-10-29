@@ -1,4 +1,5 @@
 #include <Geometry/triangle.hpp>
+#include <Geometry/line.hpp>
 #include <math.h>
 #include <iostream>
 
@@ -42,7 +43,7 @@ bool Triangle::isTopOrLeftEdge(Vector2f edge) const{
 
 void Triangle::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillColor) const {
 
-    float topLeftBiasTerm = -0.00001;
+    float topLeftBiasTerm = 0.00001;
 
     // Check if mode string is invalid
     if(mode != "solid" && mode != "interpolate"){
@@ -166,6 +167,17 @@ void Triangle::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillC
         w1_init += delta_w1_row;
         w2_init += delta_w2_row;
     }
+}
+
+void Triangle::DrawEdges(FrameBuffer& frameBuffer, Color lineColor) const{
+
+    std::cout << p0.x << " " <<  p0.y << std::endl;
+    std::cout << p1.x << " " << p1.y << std::endl;
+    std::cout << p2.x << " " << p2.y << std::endl;
+
+    Line_f{p0,p1}.RasterizeVECGEN(frameBuffer,lineColor);
+    Line_f{p1,p2}.RasterizeVECGEN(frameBuffer,lineColor);
+    Line_f{p0,p2}.RasterizeVECGEN(frameBuffer,lineColor);
 }
 
 void Triangle::ApplyTransform(Matrix3x3 transformation){

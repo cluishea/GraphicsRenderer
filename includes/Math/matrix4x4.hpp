@@ -9,6 +9,35 @@ struct Matrix4x4 {
 
     std::array<float,16> a;
 
+    // Zero initialization
+    Matrix4x4(){
+        a = std::array<float,16>{};
+    }
+
+    Matrix4x4(const std::array<float,16>& arr):a(arr){
+
+    }
+
+    Matrix4x4(const std::array<float,4>& r1, const std::array<float,4>& r2, const std::array<float,4>& r3, const std::array<float,4>& r4){
+        a[0] = r1[0];
+        a[1] = r1[1];
+        a[2] = r1[2];
+        a[3] = r1[3];
+        a[4] = r2[0];
+        a[5] = r2[1];
+        a[6] = r2[2];
+        a[7] = r2[3];
+        a[8] = r3[0];
+        a[9] = r3[1];
+        a[10] = r3[2];
+        a[11] = r3[3];
+        a[12] = r4[0];
+        a[13] = r4[1];
+        a[14] = r4[2];
+        a[15] = r4[3];
+    }
+
+
     Matrix4x4 operator*(Matrix4x4 other){
         std::array<float,16> result;
         for(int i = 0; i<4; i++){
@@ -23,6 +52,14 @@ struct Matrix4x4 {
 };
 
 
+inline Vector4f operator*(Vector4f vec, Matrix4x4 mat){
+    return Vector4f{
+        vec.a[0]*mat.a[0] + vec.a[1]*mat.a[4] + vec.a[2]*mat.a[8] + vec.a[3]*mat.a[12],
+        vec.a[0]*mat.a[1] + vec.a[1]*mat.a[5] + vec.a[2]*mat.a[9] + vec.a[3]*mat.a[13],
+        vec.a[0]*mat.a[2] + vec.a[1]*mat.a[6] + vec.a[2]*mat.a[10] + vec.a[3]*mat.a[14],
+        vec.a[0]*mat.a[3] + vec.a[1]*mat.a[7] + vec.a[2]*mat.a[11] + vec.a[3]*mat.a[15]
+    };
+}
 
 
 
