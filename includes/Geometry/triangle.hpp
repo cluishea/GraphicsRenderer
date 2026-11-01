@@ -79,6 +79,15 @@ public:
 
     void DivideByZ();
 
+    // Get triangle point
+    Point3f Centroid(){
+        return Point3f{
+            (p0.x+p1.x+p2.x)/3,
+            (p0.y+p1.y+p2.y)/3,
+            (p0.z+p1.z+p2.z)/3
+        };
+    }
+
     // Convert to Triangle2D just keeping the x and y coordinates
     operator Triangle2D(){
         return Triangle2D{
@@ -86,6 +95,16 @@ public:
             (Point2f)p1,
             (Point2f)p2
         };
+    }
+
+    // Get the normal of the triangle (Assumed to be wound clockwise)
+    Vector3f Normal(){
+        Vector3f l1 = Vector3f {p0,p1};
+        Vector3f l2 = - Vector3f {p0,p2};
+        
+        Vector3f normal = l1.Cross(l2);
+        normal.Normalize();
+        return normal;
     }
 
     

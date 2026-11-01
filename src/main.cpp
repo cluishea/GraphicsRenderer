@@ -69,16 +69,16 @@ int main()
 
     gfx::Triangle3D t1 {p0,p1,p2};
     gfx::Triangle3D t2 {p0, p2,p3};
-    gfx::Triangle3D t3 {p4,p5,p6};
-    gfx::Triangle3D t4 {p4, p6, p7};
+    gfx::Triangle3D t3 {p6,p5,p4};
+    gfx::Triangle3D t4 {p7, p6, p4};
     gfx::Triangle3D t5 {p1,p5,p2};
     gfx::Triangle3D t6 {p2, p5, p6};
     gfx::Triangle3D t7 {p3, p2, p7};
     gfx::Triangle3D t8 {p7,p2,p6};
-     gfx::Triangle3D t9 {p0,p1,p5};
-    gfx::Triangle3D t10 {p0, p5, p4};
+     gfx::Triangle3D t9 {p0,p5,p1};
+    gfx::Triangle3D t10 {p4, p5, p0};
     gfx::Triangle3D t11 {p0, p4, p3};
-    gfx::Triangle3D t12 {p3,p4,p2};
+    gfx::Triangle3D t12 {p3,p7,p4};
 
     gfx::Mesh3D mesh;
     mesh.AddTriangle(t1);
@@ -97,7 +97,11 @@ int main()
     gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,120,0.1f,100);
     mesh2.DrawMesh(frame);
     
-    
+    //gfx::Triangle2D t = gfx::Triangle2D{gfx::Point2f{10,10}, gfx::Point2f{40,0}, gfx::Point2f{0,40}};
+    //t.Rasterize(frame);
+
+    // Fix the issue where 3D to 2D operation messes up the winding order of triangles
+
     sf::RenderWindow window(
         sf::VideoMode({width*scale, height*scale}),
         "Renderer"

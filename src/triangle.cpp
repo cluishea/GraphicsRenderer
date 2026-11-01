@@ -43,6 +43,7 @@ bool Triangle2D::isTopOrLeftEdge(Vector2f edge) const{
 
 void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillColor) const {
 
+
     float topLeftBiasTerm = -0.0000001;
 
     // Check if mode string is invalid
@@ -101,6 +102,7 @@ void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fil
     Vector2f side_01 = Vector2f(p0,p1);
     Vector2f side_12 = Vector2f(p1,p2);
     Vector2f side_20 = Vector2f(p2,p0);
+    
 
     // Value proportional to the area of triangle for the interpolation
     float triangleArea = side_01.Cross(-side_20);
@@ -139,14 +141,16 @@ void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fil
         float w0 = w0_init;
         float w1 = w1_init;
         float w2 = w2_init;
+        
 
         for(int i = x_min; i <= x_max; i++){
 
-            //std::cout << i << " , " << j << w0 << " " << " " << w1 << " " << w2 << std::endl;
+            std::cout << i << " , " << j << " : " << w0 << " " << " " << w1 << " " << w2 << std::endl;
 
             // Check for whether the pixel belongs to the triangle
             if(w0 > 0 && w1 > 0 && w2 > 0){
                 //std::cout << "Did" << std::endl;
+
                 if(interpolate){
                     float alpha = w0 / triangleArea;
                     float beta = w1 / triangleArea;

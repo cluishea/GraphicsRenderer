@@ -22,8 +22,9 @@ public:
     }
 
     void DrawMesh(FrameBuffer& frameBuffer, Color lineColor = Color{0,0,0}){
-        for(auto tri : triangles){
-            tri.DrawEdges(frameBuffer, lineColor);
+        for(auto& tri : triangles){
+            //tri.DrawEdges(frameBuffer, lineColor);
+            tri.Rasterize(frameBuffer,"solid",lineColor);
         }
     }
 
