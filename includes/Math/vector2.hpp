@@ -35,6 +35,10 @@ namespace gfx{
             return {scalar*x,scalar*y};
         }
 
+        Vector2f operator/(float scalar) const{
+            return {x/scalar, y/scalar};
+        }
+
         Vector2f operator-() const{
             return {-x,-y};
         }

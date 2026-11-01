@@ -124,13 +124,19 @@ void Line_f::RasterizeVECGEN(FrameBuffer& frameBuffer, Color lineColor, bool ras
     }
     
 }
+void Line_f::RasterizeBresenham(FrameBuffer& frameBuffer, Color lineColor, bool rasterizeOutside){
+    Line_i{
+        Point2i{static_cast<int>(std::round(start.x)),static_cast<int>(std::round(start.y))},
+        Point2i{static_cast<int>(std::round(end.x)),static_cast<int>(std::round(end.y))}
+    }.RasterizeBresenham(frameBuffer,lineColor,rasterizeOutside);
+}
 
 Line_i :: Line_i (Point2i startPoint, Point2i endPoint) : start(startPoint), end(endPoint){
 
 }
 
-void Line_i::RasterizeBresenham(FrameBuffer& frameBuffer, Color lineColor){
-    if(start.x < 0 || start.y < 0 || start.x >= frameBuffer.GetWidth() || start.y >= frameBuffer.GetHeight()){
+void Line_i::RasterizeBresenham(FrameBuffer& frameBuffer, Color lineColor, bool rasterizeOutside){
+    if((start.x < 0 || start.y < 0 || start.x >= frameBuffer.GetWidth() || start.y >= frameBuffer.GetHeight()) && !rasterizeOutside){
         return;
     }
     

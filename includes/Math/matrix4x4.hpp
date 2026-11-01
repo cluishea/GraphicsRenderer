@@ -1,6 +1,7 @@
 #pragma once
 #include <Math/vector4.hpp>
 #include <array>
+#include <math.h>
 
 namespace gfx{
     
@@ -47,6 +48,28 @@ struct Matrix4x4 {
                 }
             }
         }
+        return Matrix4x4{result};
+    }
+
+    // Perspective projection transform, outputs the normalized 2D coordinates in range -1 to 1 when multiplied by a normalized 3D point (Vector4)
+    static Matrix4x4 PerspectiveProjection(float aspectRatio, float FOV, float z_near, float z_far){
+        /*
+            aspectRatio = Screen width / Screen height
+            FOV = Field of view
+            z_near = Near clipping plane
+            z_far = Far clipping plane
+        */
+
+        float q = z_far / (z_far - z_near);
+        FOV = FOV * M_PI / 180.0f;
+        float fovAdjust = 1 / std::tanf(FOV/2);
+
+        return Matrix4x4{{
+            fovAdjust/aspectRatio, 0.f, 0.f, 0.f, 
+            0.f, fovAdjust, 0.f, 0.f, 
+            0.f, 0.f, q, 1.f,
+            0.f, 0.f, - q * z_near, 0.f
+        }};
     }
 
 };

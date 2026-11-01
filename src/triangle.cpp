@@ -5,27 +5,27 @@
 
 namespace gfx{
 
-Triangle::Triangle(Point2f p0, Point2f p1, Point2f p2, Color c0, Color c1, Color c2):p0(p0), p1(p1), p2(p2), c0(c0), c1(c1), c2(c2){}
+Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color c0, Color c1, Color c2):p0(p0), p1(p1), p2(p2), c0(c0), c1(c1), c2(c2){}
 
-Triangle::Triangle(Point2f p0, Point2f p1, Point2f p2):p0(p0), p1(p1), p2(p2){
+Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2):p0(p0), p1(p1), p2(p2){
     c0 = DEFAULT_COLOR;
     c1 = DEFAULT_COLOR;
     c2 = DEFAULT_COLOR;
 }
 
-Triangle::Triangle(Point2f p0, Point2f p1, Point2f p2, Color solidColor):p0(p0), p1(p1), p2(p2){
+Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color solidColor):p0(p0), p1(p1), p2(p2){
     c0 = solidColor;
     c1 = solidColor;
     c2 = solidColor;
 }
 
-void Triangle::SetColor(Color solidColor){
+void Triangle2D::SetColor(Color solidColor){
     c0 = solidColor;
     c1 = solidColor;
     c2 = solidColor;
 }
 
-void Triangle::SetColor(std::vector<Color> colors){
+void Triangle2D::SetColor(std::vector<Color> colors){
 
     if(colors.size() != 3){ return; }
     c0 = colors[0];
@@ -35,15 +35,15 @@ void Triangle::SetColor(std::vector<Color> colors){
     //std::cout <<  std::hex << c0.ToRGBA() << " " << c1.ToRGBA() << " " << c2.ToRGBA() << std::endl;
 }
 
-bool Triangle::isTopOrLeftEdge(Vector2f edge) const{
+bool Triangle2D::isTopOrLeftEdge(Vector2f edge) const{
     // It assumes clockwise winding of edges
     return ((edge.y == 0.f && edge.x > 0.f) || (edge.y < 0.f));
 }
 
 
-void Triangle::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillColor) const {
+void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillColor) const {
 
-    float topLeftBiasTerm = 0.00001;
+    float topLeftBiasTerm = -0.0000001;
 
     // Check if mode string is invalid
     if(mode != "solid" && mode != "interpolate"){
@@ -169,22 +169,64 @@ void Triangle::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillC
     }
 }
 
-void Triangle::DrawEdges(FrameBuffer& frameBuffer, Color lineColor) const{
+void Triangle2D::DrawEdges(FrameBuffer& frameBuffer, Color lineColor) const{
 
-    std::cout << p0.x << " " <<  p0.y << std::endl;
+    std::cout << p0.x << " " << p0.y << std::endl;
     std::cout << p1.x << " " << p1.y << std::endl;
     std::cout << p2.x << " " << p2.y << std::endl;
 
-    Line_f{p0,p1}.RasterizeVECGEN(frameBuffer,lineColor);
-    Line_f{p1,p2}.RasterizeVECGEN(frameBuffer,lineColor);
-    Line_f{p0,p2}.RasterizeVECGEN(frameBuffer,lineColor);
+    Line_f{p0,p1}.RasterizeBresenham(frameBuffer,lineColor);
+    Line_f{p1,p2}.RasterizeBresenham(frameBuffer,lineColor);
+    Line_f{p0,p2}.RasterizeBresenham(frameBuffer,lineColor);
 }
 
-void Triangle::ApplyTransform(Matrix3x3 transformation){
+void Triangle2D::ApplyTransform(Matrix3x3 transformation){
     p0 = (Vector3f::Wrap2DPoint(p0)*transformation).Unwrap2DPoint();
     p1 = (Vector3f::Wrap2DPoint(p1)*transformation).Unwrap2DPoint();
     p2 = (Vector3f::Wrap2DPoint(p2)*transformation).Unwrap2DPoint();
 }
+
+
+
+
+Triangle3D::Triangle3D(Point3f p0, Point3f p1, Point3f p2):p0(p0), p1(p1), p2(p2){}
+
+void Triangle3D::DivideByZ(){
+    if(p0.z!=0){
+        p0.x /= p0.z;
+        p0.y /= p0.z;
+    }
+    if(p1.z!=0){
+        p1.x /= p1.z;
+        p1.y /= p1.z;
+    }
+    if(p2.z!=0){
+        p2.x /= p2.z;
+        p2.y /= p2.z;
+    }   
+
+}
+
+void Triangle3D::ApplyTransform(Matrix4x4 transformation){
+    p0 = (Vector4f::Wrap3DPoint(p0)*transformation).Unwrap3DPoint();
+    p1 = (Vector4f::Wrap3DPoint(p1)*transformation).Unwrap3DPoint();
+    p2 = (Vector4f::Wrap3DPoint(p2)*transformation).Unwrap3DPoint();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

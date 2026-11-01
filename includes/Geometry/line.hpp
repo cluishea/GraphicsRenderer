@@ -15,7 +15,8 @@ public:
     Line_f(Point2f startPoint, Point2f endPoint);
 
     void RasterizeVECGEN(FrameBuffer& frameBuffer,Color lineColor = Color{}, bool rasterizeOutside = true);
-    // Do convert this to Bresenham rasterizer
+    
+    void RasterizeBresenham(FrameBuffer& FrameBuffer, Color lineColor = Color{}, bool rasterizeOutside = true);
 
 };
 
@@ -26,7 +27,7 @@ private:
     Point2i end;
 public:
     Line_i(Point2i startPoint, Point2i endPoint);
-    void RasterizeBresenham(FrameBuffer& frameBuffer, Color lineColor = Color{});
+    void RasterizeBresenham(FrameBuffer& frameBuffer, Color lineColor = Color{}, bool rasterizeOutside = true);
 
 };
 }

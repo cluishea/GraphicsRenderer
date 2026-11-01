@@ -4,6 +4,7 @@
 #include <Core/framebuffer.hpp>
 #include <Math/vector2.hpp>
 #include <Math/matrix3x3.hpp>
+#include <Math/matrix4x4.hpp>
 #include <vector>
 #include <string>
 
@@ -12,7 +13,7 @@ namespace gfx{
 // The triangle class stores points as float points (Point2f)
 // The rendering system uses clockwise direction for polygon faces winding order
 
-class Triangle{
+class Triangle2D{
 
 private:
     Point2f p0,p1,p2;
@@ -25,13 +26,13 @@ private:
 
 public:
     // Construct the triangle with three points also apply three colors for the points
-    Triangle(Point2f p0, Point2f p1, Point2f p2, Color c0 , Color c1 , Color c2 );
+    Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color c0 , Color c1 , Color c2 );
 
     // Construct the triangle with just the three points
-    Triangle(Point2f p0, Point2f p1, Point2f p2);
+    Triangle2D(Point2f p0, Point2f p1, Point2f p2);
 
     // Construct the triangle with three points and a solid color
-    Triangle(Point2f p0, Point2f p1, Point2f p2, Color solidColor);
+    Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color solidColor);
 
     // Give a solid Color to all pixels
     void SetColor(Color color);
@@ -50,8 +51,49 @@ public:
     // Apply the given transformation, input given as the transformation matrix
     void ApplyTransform(Matrix3x3 transformMatrix);
 
+    // Denormalize the points
+    void DenormalizeCoordinates(int screenWidth, int screenHeight){
+        p0.Denormalize(screenWidth, screenHeight);
+        p1.Denormalize(screenWidth, screenHeight);
+        p2.Denormalize(screenWidth, screenHeight);
+    }
+
+};
+
+
+/*
+    Three dimensional triangles
+*/
+class Triangle3D{
+
+private:
+    Point3f p0, p1, p2; 
+
+public:
+
+    // Construct with three points
+    Triangle3D(Point3f p0, Point3f p1, Point3f p2);
+
+    // Apply the given transform, input is 4x4 matrix
+    void ApplyTransform(Matrix4x4 transformMatrix);
+
+    void DivideByZ();
+
+    // Convert to Triangle2D just keeping the x and y coordinates
+    operator Triangle2D(){
+        return Triangle2D{
+            (Point2f)p0,
+            (Point2f)p1,
+            (Point2f)p2
+        };
+    }
+
     
 
 };
+
+
+
+
 
 }

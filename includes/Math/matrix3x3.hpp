@@ -82,7 +82,6 @@ struct Matrix3x3 {
         };
     }
 
-
 };
 
 inline Vector3f operator*(Vector3f vec, Matrix3x3 mat){

@@ -40,9 +40,12 @@ public:
     int GetHeight() const{
         return frameHeight;
     }
-
+ 
     // Get the pixels
+    // Note: Modify this so the frame buffer has the end points of coordinate space and set the
+    // pixels accordingly, for now its ok
     std::vector<std::uint32_t> GetPixels() const;
+
 };
 
 }
