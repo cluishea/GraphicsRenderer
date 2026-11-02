@@ -24,6 +24,10 @@ private:
     // Returns whether the edge is top flat or left edge
     bool isTopOrLeftEdge(Vector2f edge) const;
 
+    // Ensures that the winding is clockwise
+    void CheckClockwise();
+
+
 public:
     // Construct the triangle with three points also apply three colors for the points
     Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color c0 , Color c1 , Color c2 );

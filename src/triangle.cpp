@@ -5,18 +5,24 @@
 
 namespace gfx{
 
-Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color c0, Color c1, Color c2):p0(p0), p1(p1), p2(p2), c0(c0), c1(c1), c2(c2){}
+Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color c0, Color c1, Color c2):p0(p0), p1(p1), p2(p2), c0(c0), c1(c1), c2(c2){
+    CheckClockwise();
+}
 
 Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2):p0(p0), p1(p1), p2(p2){
     c0 = DEFAULT_COLOR;
     c1 = DEFAULT_COLOR;
     c2 = DEFAULT_COLOR;
+
+    CheckClockwise();
 }
 
 Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color solidColor):p0(p0), p1(p1), p2(p2){
     c0 = solidColor;
     c1 = solidColor;
     c2 = solidColor;
+
+    CheckClockwise();
 }
 
 void Triangle2D::SetColor(Color solidColor){
@@ -40,11 +46,25 @@ bool Triangle2D::isTopOrLeftEdge(Vector2f edge) const{
     return ((edge.y == 0.f && edge.x > 0.f) || (edge.y < 0.f));
 }
 
+void Triangle2D::CheckClockwise(){
+    // Ensure that the winding is clockwise
+    if(Vector2f{p2,p0}.Cross(Vector2f{p0,p1}) < 0.0f){
+        Point2f temp = p0;
+        p0 = p2;
+        p2 = temp;
+
+        Color tempc = c0;
+        c0 = c2;
+        c2 = tempc;
+    }
+}
+
 
 void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillColor) const {
 
+    std::cout << p0.x << " " << p0.y << " , " << p1.x << " " << p1.y << " , " << p2.x << " " << p2.y << std::endl;
 
-    float topLeftBiasTerm = -0.0000001;
+    float topLeftBiasTerm = -0.000001;
 
     // Check if mode string is invalid
     if(mode != "solid" && mode != "interpolate"){
@@ -108,9 +128,9 @@ void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fil
     float triangleArea = side_01.Cross(-side_20);
 
     // Bias terms for the edges
-    float bias_side_01 = isTopOrLeftEdge(side_01) ? 0 : topLeftBiasTerm;
-    float bias_side_12 = isTopOrLeftEdge(side_12) ? 0 : topLeftBiasTerm;
-    float bias_side_20 = isTopOrLeftEdge(side_20) ? 0 : topLeftBiasTerm;
+    float bias_side_01 = isTopOrLeftEdge(side_01) ? 0.0 : topLeftBiasTerm;
+    float bias_side_12 = isTopOrLeftEdge(side_12) ? 0.0 : topLeftBiasTerm;
+    float bias_side_20 = isTopOrLeftEdge(side_20) ? 0.0 : topLeftBiasTerm;
 
 
     
@@ -136,7 +156,7 @@ void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fil
     float delta_w2_row = p1.x - p0.x;
 
     // Looping through the candidate points
-    for (int j = y_min; j < y_max ; j++){
+    for (int j = y_min; j <= y_max ; j++){
 
         float w0 = w0_init;
         float w1 = w1_init;
@@ -145,10 +165,10 @@ void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fil
 
         for(int i = x_min; i <= x_max; i++){
 
-            std::cout << i << " , " << j << " : " << w0 << " " << " " << w1 << " " << w2 << std::endl;
+            // std::cout << i << " , " << j << " : " << w0 << " " << " " << w1 << " " << w2 << std::endl;
 
             // Check for whether the pixel belongs to the triangle
-            if(w0 > 0 && w1 > 0 && w2 > 0){
+            if(w0 >= 0 && w1 >= 0 && w2 >= 0){
                 //std::cout << "Did" << std::endl;
 
                 if(interpolate){
@@ -175,9 +195,9 @@ void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fil
 
 void Triangle2D::DrawEdges(FrameBuffer& frameBuffer, Color lineColor) const{
 
-    std::cout << p0.x << " " << p0.y << std::endl;
-    std::cout << p1.x << " " << p1.y << std::endl;
-    std::cout << p2.x << " " << p2.y << std::endl;
+    //std::cout << p0.x << " " << p0.y << std::endl;
+    //std::cout << p1.x << " " << p1.y << std::endl;
+    //std::cout << p2.x << " " << p2.y << std::endl;
 
     Line_f{p0,p1}.RasterizeBresenham(frameBuffer,lineColor);
     Line_f{p1,p2}.RasterizeBresenham(frameBuffer,lineColor);

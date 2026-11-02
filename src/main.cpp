@@ -62,22 +62,22 @@ int main()
     gfx::Point3f p1{1,2,1};
     gfx::Point3f p2{2,2,1};
     gfx::Point3f p3{2,1,1};
-    gfx::Point3f p4{1,1,2};
-    gfx::Point3f p5{1,2,2};
-    gfx::Point3f p6{2,2,2};
-    gfx::Point3f p7{2,1,2};
+    gfx::Point3f p4{1,1,2.5};
+    gfx::Point3f p5{1,2,2.5};
+    gfx::Point3f p6{2,2,2.5};
+    gfx::Point3f p7{2,1,2.5};
 
     gfx::Triangle3D t1 {p0,p1,p2};
     gfx::Triangle3D t2 {p0, p2,p3};
     gfx::Triangle3D t3 {p6,p5,p4};
     gfx::Triangle3D t4 {p7, p6, p4};
-    gfx::Triangle3D t5 {p1,p5,p2};
+    gfx::Triangle3D t5 {p2,p1,p5};
     gfx::Triangle3D t6 {p2, p5, p6};
     gfx::Triangle3D t7 {p3, p2, p7};
     gfx::Triangle3D t8 {p7,p2,p6};
-     gfx::Triangle3D t9 {p0,p5,p1};
+    gfx::Triangle3D t9 {p0,p5,p1};
     gfx::Triangle3D t10 {p4, p5, p0};
-    gfx::Triangle3D t11 {p0, p4, p3};
+    gfx::Triangle3D t11 {p4, p0, p3};
     gfx::Triangle3D t12 {p3,p7,p4};
 
     gfx::Mesh3D mesh;
