@@ -21,9 +21,9 @@ struct Vector4f{
 
     Point3f Unwrap3DPoint(){
         return Point3f{
-            a[0] / a[4],
-            a[1] / a[4],
-            a[2] / a[4]           
+            a[0] / a[3],
+            a[1] / a[3],
+            a[2] / a[3]           
         };
     }
 

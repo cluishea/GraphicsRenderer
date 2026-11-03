@@ -35,7 +35,7 @@ public:
         for (auto& tri : triangles){
 
             // Brightness for the lignting
-            float brightness;
+            float brightness, diffuse;
 
             Vector3f vecCameraToTriangle = Vector3f {camera.GetPosition(),tri.Centroid()};
             vecCameraToTriangle.Normalize();
@@ -50,14 +50,12 @@ public:
                 tri.DivideByZ();
                 Triangle2D tri_2d = (Triangle2D) tri;
 
-                if(light.direction.a[0] == 0.0f || light.direction.a[1] == 0.0f || light.direction.a[2] == 0.0f){
-                    brightness = light.intensity;
-                } else {
-                    brightness = std::max(0.0f, (light.direction).Dot(triangleNormal)) * light.intensity;
-                }
+                
+                diffuse = std::max(0.0f, (  light.direction).Dot(triangleNormal));
+                brightness = std::min (1.0f, 0.15f + diffuse * light.intensity);
+                
 
                 tri_2d.SetColor(tri.GetSolidColor() * brightness);
-                std::cout << (-light.direction).Dot(triangleNormal) << std::endl;
 
                 output.AddTriangle(tri_2d);
             }
@@ -67,7 +65,7 @@ public:
         return output;
     }
 
-    void ApplyTransform(Matrix4x4& transformation){
+    void ApplyTransform(Matrix4x4 transformation){
         for (auto& tri: triangles){
             tri.ApplyTransform(transformation);
         }

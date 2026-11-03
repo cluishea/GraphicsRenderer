@@ -147,6 +147,9 @@ struct Matrix4x4 {
 
 
 inline Vector4f operator*(Vector4f vec, Matrix4x4 mat){
+
+    std::cout << vec.a[0] << mat.a[0] << std::endl;
+
     return Vector4f{
         vec.a[0]*mat.a[0] + vec.a[1]*mat.a[4] + vec.a[2]*mat.a[8] + vec.a[3]*mat.a[12],
         vec.a[0]*mat.a[1] + vec.a[1]*mat.a[5] + vec.a[2]*mat.a[9] + vec.a[3]*mat.a[13],

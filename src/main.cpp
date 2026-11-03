@@ -62,10 +62,10 @@ int main()
     gfx::Point3f p1{1,2,1};
     gfx::Point3f p2{2,2,1};
     gfx::Point3f p3{2,1,1};
-    gfx::Point3f p4{1,1,2.5};
-    gfx::Point3f p5{1,2,2.5};
-    gfx::Point3f p6{2,2,2.5};
-    gfx::Point3f p7{2,1,2.5};
+    gfx::Point3f p4{1,1,1.5};
+    gfx::Point3f p5{1,2,1.5};
+    gfx::Point3f p6{2,2,1.5};
+    gfx::Point3f p7{2,1,1.5};
 
     gfx::Triangle3D t1 {p0,p1,p2, gfx::Color{255,0,0}};
     gfx::Triangle3D t2 {p0, p2,p3, gfx::Color{255,0,0}};
@@ -94,11 +94,11 @@ int main()
     mesh.AddTriangle(t11);
     mesh.AddTriangle(t12);
 
-    gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateYAxis(1.0);
+    gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(10);
     mesh.ApplyTransform(yrotate);
 
-    gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,120,0.1f,100, gfx::Camera{gfx::Point3f{0,0,0}}, gfx::Light{gfx::Vector3f{0.f,0.f,-1.f}, 0.5f});
-    mesh2.DrawMesh(frame);
+    gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,120,0.1f,100, gfx::Camera{gfx::Point3f{0,0,0}}, gfx::Light{gfx::Vector3f{1,1,1}, 0.8f});
+    mesh2.RasterizeMesh(frame);
     
     //gfx::Triangle2D t = gfx::Triangle2D{gfx::Point2f{10,10}, gfx::Point2f{40,0}, gfx::Point2f{0,40}};
     //t.Rasterize(frame);

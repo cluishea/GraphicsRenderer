@@ -19,11 +19,13 @@ private:
     
     // Height and width of the framebuffer (Number of rows and columns)
     int frameWidth, frameHeight; 
+    int startX, startY;
+    int endX, endY; // Exclusive 
 
 public:
 
     // Initialized the background color of the frame buffer to solid white
-    FrameBuffer(int width, int height,Color backgroundColor = Color{});
+    FrameBuffer(int width, int height, int xstart = 0, int ystart = 0, Color backgroundColor = Color{});
 
     // Clears the frame buffer with given color
     void Clear(Color clearColor = Color{});
