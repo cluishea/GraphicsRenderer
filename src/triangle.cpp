@@ -251,20 +251,4 @@ void Triangle3D::ApplyTransform(Matrix4x4 transformation){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

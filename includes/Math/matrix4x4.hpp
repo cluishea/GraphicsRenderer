@@ -72,7 +72,78 @@ struct Matrix4x4 {
         }};
     }
 
+    // Scaling transform
+    static Matrix4x4 Scale(float sx, float sy, float sz){
+        return Matrix4x4{
+            {
+                sx, 0, 0, 0,
+                0, sy, 0, 0,
+                0, 0, sz, 0, 
+                0, 0, 0, 1
+            }
+        };
+    }
+
+    // Translation transform
+    static Matrix4x4 Translate(float tx, float ty, float tz){
+        return Matrix4x4{
+            {
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                tx, ty, tz, 1
+            }
+        };
+    }
+
+    // Rotation about the x axis
+    static Matrix4x4 RotateXAxis(float angle){
+        angle = M_PI * angle / 180.0f;
+        float sine = std::sinf(angle);
+        float cosine = std::cosf(angle);
+        return Matrix4x4{
+            {
+                1, 0, 0, 0,
+                0, cosine, sine, 0,
+                0, -sine, cosine, 0, 
+                0, 0, 0, 1
+
+            }
+        };
+    }
+    static Matrix4x4 RotateYAxis(float angle){
+        angle = M_PI * angle / 180.0f;
+        float sine = std::sinf(angle);
+        float cosine = std::cosf(angle);
+        return Matrix4x4{
+            {
+                cosine, 0, sine, 0,
+                0, 1, 0, 0,
+                -sine , 0, cosine, 0, 
+                0, 0, 0, 1
+
+            }
+        };
+    }
+
+    static Matrix4x4 RotateZAxis(float angle){
+        angle = M_PI * angle / 180.0f;
+        float sine = std::sinf(angle);
+        float cosine = std::cosf(angle);
+        return Matrix4x4{
+            {
+                cosine, sine, 0, 0, 
+                -sine, cosine, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            }
+        };
+    }
+
 };
+
+
+
 
 
 inline Vector4f operator*(Vector4f vec, Matrix4x4 mat){

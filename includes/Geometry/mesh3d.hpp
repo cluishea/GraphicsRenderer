@@ -66,6 +66,12 @@ public:
         output.DenormalizeCoordinates(screenWidth, screenHeight);
         return output;
     }
+
+    void ApplyTransform(Matrix4x4& transformation){
+        for (auto& tri: triangles){
+            tri.ApplyTransform(transformation);
+        }
+    }
     
 };
 

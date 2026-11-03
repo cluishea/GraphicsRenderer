@@ -94,8 +94,11 @@ int main()
     mesh.AddTriangle(t11);
     mesh.AddTriangle(t12);
 
+    gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateYAxis(1.0);
+    mesh.ApplyTransform(yrotate);
+
     gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,120,0.1f,100, gfx::Camera{gfx::Point3f{0,0,0}}, gfx::Light{gfx::Vector3f{0.f,0.f,-1.f}, 0.5f});
-    mesh2.RasterizeMesh(frame);
+    mesh2.DrawMesh(frame);
     
     //gfx::Triangle2D t = gfx::Triangle2D{gfx::Point2f{10,10}, gfx::Point2f{40,0}, gfx::Point2f{0,40}};
     //t.Rasterize(frame);
