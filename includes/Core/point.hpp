@@ -13,10 +13,8 @@ namespace gfx{
         float y;
 
         void Denormalize(int screenWidth, int screenHeight){
-            std::cout << screenWidth << " " << screenHeight << x << " " << y << " ";
             x = x * screenWidth / 2.0;
             y = y * screenHeight / 2.0;
-            std::cout << " " << x << " " << y << std::endl;
         }
 
     };

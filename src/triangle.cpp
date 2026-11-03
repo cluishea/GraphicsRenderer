@@ -6,6 +6,7 @@
 namespace gfx{
 
 Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color c0, Color c1, Color c2):p0(p0), p1(p1), p2(p2), c0(c0), c1(c1), c2(c2){
+    solidColor = DEFAULT_COLOR;
     CheckClockwise();
 }
 
@@ -14,10 +15,12 @@ Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2):p0(p0), p1(p1), p2(p2
     c1 = DEFAULT_COLOR;
     c2 = DEFAULT_COLOR;
 
+    solidColor = DEFAULT_COLOR;
+
     CheckClockwise();
 }
 
-Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color solidColor):p0(p0), p1(p1), p2(p2){
+Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color solidColor):p0(p0), p1(p1), p2(p2), solidColor(solidColor){
     c0 = solidColor;
     c1 = solidColor;
     c2 = solidColor;
@@ -25,10 +28,12 @@ Triangle2D::Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color solidColor):p0(
     CheckClockwise();
 }
 
-void Triangle2D::SetColor(Color solidColor){
-    c0 = solidColor;
-    c1 = solidColor;
-    c2 = solidColor;
+void Triangle2D::SetColor(Color solidColor_){
+    c0 = solidColor_;
+    c1 = solidColor_;
+    c2 = solidColor_;
+
+    solidColor = solidColor_;
 }
 
 void Triangle2D::SetColor(std::vector<Color> colors){
@@ -60,9 +65,10 @@ void Triangle2D::CheckClockwise(){
 }
 
 
-void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode, Color fillColor) const {
+void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode) const {
 
-    std::cout << p0.x << " " << p0.y << " , " << p1.x << " " << p1.y << " , " << p2.x << " " << p2.y << std::endl;
+    Color fillColor = solidColor;
+
 
     float topLeftBiasTerm = -0.000001;
 
@@ -213,7 +219,13 @@ void Triangle2D::ApplyTransform(Matrix3x3 transformation){
 
 
 
-Triangle3D::Triangle3D(Point3f p0, Point3f p1, Point3f p2):p0(p0), p1(p1), p2(p2){}
+Triangle3D::Triangle3D(Point3f p0, Point3f p1, Point3f p2):p0(p0), p1(p1), p2(p2){
+    solidColor = DEFAULT_COLOR;
+}
+
+Triangle3D::Triangle3D(Point3f p0, Point3f p1, Point3f p2, Color solidColor):p0(p0),p1(p1),p2(p2),solidColor(solidColor){
+
+}
 
 void Triangle3D::DivideByZ(){
     if(p0.z!=0){

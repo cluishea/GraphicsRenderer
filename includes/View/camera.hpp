@@ -4,7 +4,7 @@
 namespace gfx{
 
 class Camera{
-
+    // Later have all fov and stuff here when needs the whole movement thing too
 private:
     Point3f position;
 

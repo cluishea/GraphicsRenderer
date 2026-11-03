@@ -18,8 +18,10 @@ class Triangle2D{
 private:
     Point2f p0,p1,p2;
     Color c0,c1,c2;
+    Color solidColor;
 
     Color DEFAULT_COLOR = Color{0,0,0};
+
 
     // Returns whether the edge is top flat or left edge
     bool isTopOrLeftEdge(Vector2f edge) const;
@@ -45,9 +47,10 @@ public:
     void SetColor(std::vector<Color> colors);
 
 
+
     // Rasterize the triangle (fill)
     // Modes = "solid" or "interpolate"
-    void Rasterize(FrameBuffer& frameBuffer, std::string mode = "solid", Color fillColor = Color{0,0,0}) const;
+    void Rasterize(FrameBuffer& frameBuffer, std::string mode = "solid") const;
 
     // Draw the edges
     void DrawEdges(FrameBuffer& FrameBuffer, Color lineColor = Color{0,0,0}) const;
@@ -72,11 +75,16 @@ class Triangle3D{
 
 private:
     Point3f p0, p1, p2; 
+    Color solidColor;
+    Color DEFAULT_COLOR = Color{0,0,0};
 
 public:
 
     // Construct with three points
     Triangle3D(Point3f p0, Point3f p1, Point3f p2);
+
+    // Construct with three points and solid color
+    Triangle3D(Point3f p0, Point3f p1, Point3f p2, Color solidColor);
 
     // Apply the given transform, input is 4x4 matrix
     void ApplyTransform(Matrix4x4 transformMatrix);
@@ -90,6 +98,11 @@ public:
             (p0.y+p1.y+p2.y)/3,
             (p0.z+p1.z+p2.z)/3
         };
+    }
+
+    // Get solid color
+    Color GetSolidColor(){
+        return solidColor;
     }
 
     // Convert to Triangle2D just keeping the x and y coordinates
