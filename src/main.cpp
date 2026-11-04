@@ -18,7 +18,7 @@ int main()
     unsigned int scale = 4;
 
 
-    gfx::FrameBuffer frame{width,height};
+    gfx::FrameBuffer frame{width,height, -50, -50};
     frame.Clear(gfx::Color{255,255,255,255});
 
 
@@ -94,10 +94,10 @@ int main()
     mesh.AddTriangle(t11);
     mesh.AddTriangle(t12);
 
-    gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(10);
+    gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(30);
     mesh.ApplyTransform(yrotate);
 
-    gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,120,0.1f,100, gfx::Camera{gfx::Point3f{0,0,0}}, gfx::Light{gfx::Vector3f{1,1,1}, 0.8f});
+    gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,120,0.1f,100, gfx::Camera{gfx::Point3f{0,0,0}}, gfx::Light{gfx::Vector3f{1,2,0}, 0.8f});
     mesh2.RasterizeMesh(frame);
     
     //gfx::Triangle2D t = gfx::Triangle2D{gfx::Point2f{10,10}, gfx::Point2f{40,0}, gfx::Point2f{0,40}};
@@ -116,23 +116,50 @@ int main()
     texture.setSmooth(false);
     sprite.setScale(sf::Vector2f{(float)scale,(float)scale});
 
+    sf::Clock clock;
+    const sf::Time timePerFrame = sf::seconds(1.f / 20.f); // 60 updates per second
+    sf::Time accumulator = sf::Time::Zero;
+
+
     while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())            
+    {   
+
+            while (const std::optional event = window.pollEvent())            
         {
             if (event->is<sf::Event::Closed>())
             {
                 window.close();
             }
         }
-        
-        
-        texture.update(reinterpret_cast<const std::uint8_t*> (frame.GetPixels().data()));
 
+        sf::Time elapsed = clock.restart();
+        accumulator += elapsed;
+
+        while (accumulator >= timePerFrame) {
+            accumulator -= timePerFrame;
+
+            // gfx::Matrix4x4 rot = gfx::Matrix4x4::RotateXAxis(angle);
+
+            // mesh.ApplyTransform(rot);
+            // gfx::Mesh2D mesh2_ = mesh.PerspectiveTransform(width, height,120,0.1f,100, gfx::Camera{gfx::Point3f{0,0,0}}, gfx::Light{gfx::Vector3f{1,2,0}, 0.8f});
+            // mesh2_.RasterizeMesh(frame);
+
+            
+            window.clear();
+        
+            
+            texture.update(reinterpret_cast<const std::uint8_t*> (frame.GetPixels().data()));
+
+
+            
+
+        }
 
         window.clear();
-        window.draw(sprite);
-        window.display();
+            window.draw(sprite);
+            window.display();
+
+        
     }
     
 

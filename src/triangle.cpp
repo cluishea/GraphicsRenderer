@@ -87,10 +87,10 @@ void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode) const {
     int y_min = std::floor(std::min(p0.y, std::min(p1.y,p2.y)));
 
     // If triangle to display are outside the buffer, set the limits to the buffer
-    if(x_min < 0) x_min = 0;
-    if(y_min < 0) y_min = 0;
-    if(x_max >= frameBuffer.GetWidth()) x_max = frameBuffer.GetWidth() - 1;
-    if(y_max >= frameBuffer.GetHeight()) y_max = frameBuffer.GetHeight() - 1;
+    //if(x_min < 0) x_min = 0;
+    //if(y_min < 0) y_min = 0;
+    //if(x_max >= frameBuffer.GetWidth()) x_max = frameBuffer.GetWidth() - 1;
+    //if(y_max >= frameBuffer.GetHeight()) y_max = frameBuffer.GetHeight() - 1;
 
     // Check if have to interpolate
     if(mode == "interpolate"){
@@ -217,6 +217,7 @@ void Triangle2D::ApplyTransform(Matrix3x3 transformation){
 }
 
 
+Triangle3D::Triangle3D(){}
 
 
 Triangle3D::Triangle3D(Point3f p0, Point3f p1, Point3f p2):p0(p0), p1(p1), p2(p2){
@@ -249,6 +250,19 @@ void Triangle3D::ApplyTransform(Matrix4x4 transformation){
     p2 = (Vector4f::Wrap3DPoint(p2)*transformation).Unwrap3DPoint();
 }
 
+Triangle2D Triangle3D::PerspectiveTrasform(Matrix4x4 transformation){
+
+    Triangle3D temp;
+
+    temp.p0 = (Vector4f::Wrap3DPoint(p0)*transformation).Unwrap3DPoint();
+    temp.p1 = (Vector4f::Wrap3DPoint(p1)*transformation).Unwrap3DPoint();
+    temp.p2 = (Vector4f::Wrap3DPoint(p2)*transformation).Unwrap3DPoint();
+
+    temp.DivideByZ();
+
+    return (Triangle2D) temp;
+
+}
 
 
 }

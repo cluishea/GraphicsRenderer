@@ -8,7 +8,7 @@ namespace gfx{
 // Struct for 4x4 matrix and some transforms implementation
 struct Matrix4x4 {
 
-    std::array<float,16> a;
+    std::array<float,16> a{};
 
     // Zero initialization
     Matrix4x4(){
@@ -136,6 +136,53 @@ struct Matrix4x4 {
                 -sine, cosine, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1
+            }
+        };
+    }
+
+    // This uses z+ as forward
+    // Puts the world coordinate into the new coordinates, specified by the forward direction and translated into the eye position
+    static Matrix4x4 PointAt(Point3f eyePoint, Point3f targetPoint, Vector3f upDirection ){
+        
+        Vector3f forward{eyePoint, targetPoint};
+        forward.Normalize();
+
+        Vector3f up = upDirection - forward * upDirection.Dot(forward);
+        up.Normalize();
+
+        Vector3f right = up.Cross(forward);
+        right.Normalize();
+        
+        return Matrix4x4{
+            {
+                forward.a[0], forward.a[1], forward.a[2], 0,
+                right.a[0], right.a[1], right.a[2], 0,
+                up.a[0], up.a[1], up.a[2], 0,
+                eyePoint.x, eyePoint.y, eyePoint.z, 1
+            }
+        };
+    }
+
+
+    static Matrix4x4 LookAt(Point3f eyePoint, Point3f targetPoint, Vector3f upDirection){
+
+        Vector3f forward{eyePoint, targetPoint};
+        forward.Normalize();
+
+        Vector3f up = upDirection - forward * upDirection.Dot(forward);
+        up.Normalize();
+
+        Vector3f right = up.Cross(forward);
+        right.Normalize();
+
+        Vector3f eye {eyePoint};
+
+        return Matrix4x4{
+            {
+                forward.a[0], right.a[0], up.a[0], 0, 
+                forward.a[1], right.a[1], up.a[1], 0,
+                forward.a[2], right.a[2], up.a[2], 0,
+                - eye.Dot(forward), -eye.Dot(right), -eye.Dot(up), 1
             }
         };
     }

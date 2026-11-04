@@ -80,6 +80,8 @@ private:
 
 public:
 
+    Triangle3D();
+
     // Construct with three points
     Triangle3D(Point3f p0, Point3f p1, Point3f p2);
 
@@ -88,6 +90,9 @@ public:
 
     // Apply the given transform, input is 4x4 matrix
     void ApplyTransform(Matrix4x4 transformMatrix);
+
+    // Apply the given transform, returning a Triangle2D
+    Triangle2D PerspectiveTrasform(Matrix4x4 transformMatrix);
 
     void DivideByZ();
 

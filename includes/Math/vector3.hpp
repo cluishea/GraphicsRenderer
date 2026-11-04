@@ -8,6 +8,13 @@ namespace gfx{
 struct Vector3f{
 
     float a[3];
+
+    Vector3f(Point3f position){
+        a[0] = position.x;
+        a[1] = position.y;
+        a[2] = position.z;
+    }
+
     Vector3f(float a0, float a1, float a2){
         a[0] = a0;
         a[1] = a1;
