@@ -92,7 +92,7 @@ public:
     void ApplyTransform(Matrix4x4 transformMatrix);
 
     // Apply the given transform, returning a Triangle2D
-    Triangle2D PerspectiveTrasform(Matrix4x4 transformMatrix);
+    Triangle3D ReturnTransform(Matrix4x4 transformMatrix);
 
     void DivideByZ();
 

@@ -250,7 +250,7 @@ void Triangle3D::ApplyTransform(Matrix4x4 transformation){
     p2 = (Vector4f::Wrap3DPoint(p2)*transformation).Unwrap3DPoint();
 }
 
-Triangle2D Triangle3D::PerspectiveTrasform(Matrix4x4 transformation){
+Triangle3D Triangle3D::ReturnTransform(Matrix4x4 transformation){
 
     Triangle3D temp;
 
@@ -258,10 +258,7 @@ Triangle2D Triangle3D::PerspectiveTrasform(Matrix4x4 transformation){
     temp.p1 = (Vector4f::Wrap3DPoint(p1)*transformation).Unwrap3DPoint();
     temp.p2 = (Vector4f::Wrap3DPoint(p2)*transformation).Unwrap3DPoint();
 
-    temp.DivideByZ();
-
-    return (Triangle2D) temp;
-
+    return temp;
 }
 
 

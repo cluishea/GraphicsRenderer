@@ -14,11 +14,11 @@
 int main()
 {
 
-    int width = 100, height = 100;
-    unsigned int scale = 4;
+    int width = 400, height = 400;
+    unsigned int scale = 1;
 
 
-    gfx::FrameBuffer frame{width,height, -50, -50};
+    gfx::FrameBuffer frame{width,height, -200, -200};
     frame.Clear(gfx::Color{255,255,255,255});
 
 
@@ -58,14 +58,14 @@ int main()
 
     */
 
-    gfx::Point3f p0{1,1,1};
-    gfx::Point3f p1{1,2,1};
-    gfx::Point3f p2{2,2,1};
-    gfx::Point3f p3{2,1,1};
-    gfx::Point3f p4{1,1,1.5};
-    gfx::Point3f p5{1,2,1.5};
-    gfx::Point3f p6{2,2,1.5};
-    gfx::Point3f p7{2,1,1.5};
+    gfx::Point3f p0{0,0,1};
+    gfx::Point3f p1{0,1,1};
+    gfx::Point3f p2{1,1,1};
+    gfx::Point3f p3{1,0,1};
+    gfx::Point3f p4{0,0,1.5};
+    gfx::Point3f p5{0,1,1.5};
+    gfx::Point3f p6{1,1,1.5};
+    gfx::Point3f p7{1,0,1.5};
 
     gfx::Triangle3D t1 {p0,p1,p2, gfx::Color{255,0,0}};
     gfx::Triangle3D t2 {p0, p2,p3, gfx::Color{255,0,0}};
@@ -94,11 +94,18 @@ int main()
     mesh.AddTriangle(t11);
     mesh.AddTriangle(t12);
 
-    gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(30);
+    gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(0);
     mesh.ApplyTransform(yrotate);
 
-    gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,120,0.1f,100, gfx::Camera{gfx::Point3f{0,0,0}}, gfx::Light{gfx::Vector3f{1,2,0}, 0.8f});
-    mesh2.RasterizeMesh(frame);
+    std::cout << "HHH" << std::endl;
+
+    gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,90,0.1f,100, gfx::Camera{gfx::Point3f{1,0,0},0.f,0.f}, gfx::Light{gfx::Vector3f{1,2,0}, 0.8f});
+
+    std::cout << "MMM" << std::endl;
+
+    mesh2.DrawMesh(frame);
+
+    std::cout << "Here" << std::endl;
     
     //gfx::Triangle2D t = gfx::Triangle2D{gfx::Point2f{10,10}, gfx::Point2f{40,0}, gfx::Point2f{0,40}};
     //t.Rasterize(frame);
@@ -109,6 +116,7 @@ int main()
         "Renderer"
     );
 
+    std::cout << "Hi" << std::endl;
 
     sf::Texture texture {sf::Vector2u{(unsigned int)width,(unsigned int)height}};
     sf::Sprite sprite{texture};
@@ -116,48 +124,31 @@ int main()
     texture.setSmooth(false);
     sprite.setScale(sf::Vector2f{(float)scale,(float)scale});
 
-    sf::Clock clock;
-    const sf::Time timePerFrame = sf::seconds(1.f / 20.f); // 60 updates per second
-    sf::Time accumulator = sf::Time::Zero;
-
-
+   
     while (window.isOpen())
     {   
 
-            while (const std::optional event = window.pollEvent())            
+
+        while (const std::optional event = window.pollEvent())            
         {
             if (event->is<sf::Event::Closed>())
             {
                 window.close();
             }
         }
-
-        sf::Time elapsed = clock.restart();
-        accumulator += elapsed;
-
-        while (accumulator >= timePerFrame) {
-            accumulator -= timePerFrame;
-
-            // gfx::Matrix4x4 rot = gfx::Matrix4x4::RotateXAxis(angle);
-
-            // mesh.ApplyTransform(rot);
-            // gfx::Mesh2D mesh2_ = mesh.PerspectiveTransform(width, height,120,0.1f,100, gfx::Camera{gfx::Point3f{0,0,0}}, gfx::Light{gfx::Vector3f{1,2,0}, 0.8f});
-            // mesh2_.RasterizeMesh(frame);
-
-            
-            window.clear();
+        window.clear();
+    
         
-            
-            texture.update(reinterpret_cast<const std::uint8_t*> (frame.GetPixels().data()));
-
-
-            
-
-        }
+        texture.update(reinterpret_cast<const std::uint8_t*> (frame.GetPixels().data()));
 
         window.clear();
-            window.draw(sprite);
-            window.display();
+        window.draw(sprite);
+        window.display();
+        
+
+        
+
+        
 
         
     }

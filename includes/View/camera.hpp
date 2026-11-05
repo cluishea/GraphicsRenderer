@@ -42,6 +42,18 @@ public:
         return position;
     }
 
+    void SetPosition(Point3f newPos){
+        position = newPos;
+    }
+
+    void SetYaw(float y){
+        yaw = y * M_PI / 180.0;
+    }
+    
+    void SetPitch(float p){
+        pitch = p * M_PI / 180.0;
+    }
+
 };
 
 

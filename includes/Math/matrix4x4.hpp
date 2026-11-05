@@ -155,9 +155,9 @@ struct Matrix4x4 {
         
         return Matrix4x4{
             {
-                forward.a[0], forward.a[1], forward.a[2], 0,
                 right.a[0], right.a[1], right.a[2], 0,
                 up.a[0], up.a[1], up.a[2], 0,
+                forward.a[0], forward.a[1], forward.a[2], 0,
                 eyePoint.x, eyePoint.y, eyePoint.z, 1
             }
         };
@@ -179,9 +179,9 @@ struct Matrix4x4 {
 
         return Matrix4x4{
             {
-                forward.a[0], right.a[0], up.a[0], 0, 
-                forward.a[1], right.a[1], up.a[1], 0,
-                forward.a[2], right.a[2], up.a[2], 0,
+                right.a[0], up.a[0], forward.a[0], 0, 
+                right.a[1], up.a[1], forward.a[1], 0,
+                right.a[2], up.a[2], forward.a[2], 0,
                 - eye.Dot(forward), -eye.Dot(right), -eye.Dot(up), 1
             }
         };
