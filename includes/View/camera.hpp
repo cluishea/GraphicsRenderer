@@ -48,10 +48,24 @@ public:
 
     void SetYaw(float y){
         yaw = y * M_PI / 180.0;
+
+        if(yaw > 360){
+            yaw -= 360;
+        }
+        if(yaw < 360){
+            yaw += 360;
+        }
     }
     
     void SetPitch(float p){
         pitch = p * M_PI / 180.0;
+
+        if(yaw > 90){
+            yaw -= 90;
+        }
+        if(yaw < 90){
+            yaw += 90;
+        }
     }
 
 };

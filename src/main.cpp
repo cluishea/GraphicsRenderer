@@ -9,6 +9,8 @@
 #include <Geometry/mesh2d.hpp>
 #include <Geometry/mesh3d.hpp>
 
+#include <Utilities/input.hpp>
+
 #include <iostream>
 
 int main()
@@ -17,8 +19,11 @@ int main()
     int width = 400, height = 400;
     unsigned int scale = 1;
 
+    // Input
+    Input input;
 
-    gfx::FrameBuffer frame{width,height, -200, -200};
+
+    gfx::FrameBuffer frame{width,height, -width / 2, - height / 2};
     frame.Clear(gfx::Color{255,255,255,255});
 
 
@@ -58,14 +63,14 @@ int main()
 
     */
 
-    gfx::Point3f p0{0,0,1};
-    gfx::Point3f p1{0,1,1};
-    gfx::Point3f p2{1,1,1};
-    gfx::Point3f p3{1,0,1};
-    gfx::Point3f p4{0,0,1.5};
-    gfx::Point3f p5{0,1,1.5};
+    gfx::Point3f p0{-1,-1,0.5};
+    gfx::Point3f p1{-1,1,0.5};
+    gfx::Point3f p2{-1,1,0.5};
+    gfx::Point3f p3{1,-1,0.5};
+    gfx::Point3f p4{-1,-1,1.5};
+    gfx::Point3f p5{-1,1,1.5};
     gfx::Point3f p6{1,1,1.5};
-    gfx::Point3f p7{1,0,1.5};
+    gfx::Point3f p7{1,-1,1.5};
 
     gfx::Triangle3D t1 {p0,p1,p2, gfx::Color{255,0,0}};
     gfx::Triangle3D t2 {p0, p2,p3, gfx::Color{255,0,0}};
@@ -97,15 +102,12 @@ int main()
     gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(0);
     mesh.ApplyTransform(yrotate);
 
-    std::cout << "HHH" << std::endl;
 
-    gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,90,0.1f,100, gfx::Camera{gfx::Point3f{1,0,0},0.f,0.f}, gfx::Light{gfx::Vector3f{1,2,0}, 0.8f});
+    gfx::Mesh2D mesh2 = mesh.PerspectiveTransform(width, height,120,0.1f,100, gfx::Camera{gfx::Point3f{0,0,0},0.f,0.f}, gfx::Light{gfx::Vector3f{1,2,0}, 0.8f});
 
-    std::cout << "MMM" << std::endl;
 
     mesh2.DrawMesh(frame);
 
-    std::cout << "Here" << std::endl;
     
     //gfx::Triangle2D t = gfx::Triangle2D{gfx::Point2f{10,10}, gfx::Point2f{40,0}, gfx::Point2f{0,40}};
     //t.Rasterize(frame);
@@ -116,7 +118,6 @@ int main()
         "Renderer"
     );
 
-    std::cout << "Hi" << std::endl;
 
     sf::Texture texture {sf::Vector2u{(unsigned int)width,(unsigned int)height}};
     sf::Sprite sprite{texture};
@@ -127,13 +128,19 @@ int main()
    
     while (window.isOpen())
     {   
-
+        
+        // Notifying the input class of a new frame
+        input.BeginFrame();
 
         while (const std::optional event = window.pollEvent())            
         {
             if (event->is<sf::Event::Closed>())
             {
                 window.close();
+            }
+            else
+            {
+                input.HandleEvent(*event);
             }
         }
         window.clear();
