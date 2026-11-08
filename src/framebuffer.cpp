@@ -7,7 +7,7 @@ namespace gfx{
         frameBuffer = std::vector<std::uint32_t>(width*height, backgroundColor.ToRGBA());
 
         endX = startX + width;
-        endY = startY + width;
+        endY = startY + height;
     }
 
     void FrameBuffer::Clear(Color clearColor){

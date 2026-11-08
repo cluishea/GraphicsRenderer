@@ -64,7 +64,7 @@ public:
                 tri_2d.DenormalizeCoordinates(screenWidth, screenHeight);
                 
                 diffuse = std::max(0.0f, (  light.direction).Dot(triangleNormal));
-                brightness = std::min (1.0f, 0.25f + diffuse * light.intensity);
+                brightness = std::min (1.0f, 1.f + diffuse * light.intensity);
                 
 
                 tri_2d.SetColor(tri.GetSolidColor() * brightness);

@@ -24,8 +24,16 @@ public:
         return keyboardButtonPressed[static_cast<size_t>(k)];
     }
 
+    bool IsKeyDown(sf::Keyboard::Key k){
+        return keyboardButtonDown[static_cast<size_t>(k)];
+    }
+
     bool IsMouseButtonPressed(sf::Mouse::Button b){
         return mouseButtonPressed[static_cast<size_t>(b)];
+    }
+
+    bool IsMouseButtonDown(sf::Mouse::Button b){
+        return keyboardButtonDown[static_cast<size_t>(b)];
     }
 
 };

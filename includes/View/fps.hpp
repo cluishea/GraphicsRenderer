@@ -1,4 +1,4 @@
-#pragma once'
+#pragma once
 
 #include <View/camera.hpp>
 #include <Utilities/input.hpp>
@@ -12,14 +12,55 @@ private:
     Camera camera;
     Input& input;
 
+    float FOV = 120;
+    float z_near = 0.1, z_far = 100;
+
+    float movementSpeed = 3.0f;
 
 public:
     FPS(Camera cam, Input& in) : camera(cam), input(in){
 
     }
 
+    
     void Update(float dt){
+    
+        if(input.IsKeyDown(sf::Keyboard::Key::A)){
+            camera.position.x -= movementSpeed*dt;
+        }
+        if(input.IsKeyDown(sf::Keyboard::Key::D)){
+            camera.position.x += movementSpeed*dt;
+        }
+
+        if(input.IsKeyDown(sf::Keyboard::Key::W)){
+            camera.position.z += movementSpeed*dt;
+        }
+        if(input.IsKeyDown(sf::Keyboard::Key::S)){
+            camera.position.z -= movementSpeed*dt;
+        }
         
+        if(input.IsKeyDown(sf::Keyboard::Key::Space)){
+            camera.position.y += movementSpeed*dt;
+        }
+        if(input.IsKeyDown(sf::Keyboard::Key::LShift)){
+            camera.position.y -= movementSpeed*dt;
+        }
+        camera.UpdateTarget();
+    }
+    
+    
+    float GetFOV(){
+        return FOV;
+    }
+    float GetZNear(){
+        return z_near;
+    }
+    float GetZFar(){
+        return z_far;
+    }
+
+    Camera GetCamera(){
+        return camera;
     }
 
 

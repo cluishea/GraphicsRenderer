@@ -182,7 +182,7 @@ struct Matrix4x4 {
                 right.a[0], up.a[0], forward.a[0], 0, 
                 right.a[1], up.a[1], forward.a[1], 0,
                 right.a[2], up.a[2], forward.a[2], 0,
-                - eye.Dot(forward), -eye.Dot(right), -eye.Dot(up), 1
+                - eye.Dot(right), -eye.Dot(up), -eye.Dot(forward), 1
             }
         };
     }

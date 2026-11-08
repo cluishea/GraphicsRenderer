@@ -1,6 +1,8 @@
 #pragma once
 #include <Core/point.hpp>
 
+class FPS{};
+
 namespace gfx{
 
 class Camera{
@@ -67,6 +69,8 @@ public:
             yaw += 90;
         }
     }
+
+    friend class FPS;
 
 };
 
