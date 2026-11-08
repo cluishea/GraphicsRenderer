@@ -16,6 +16,8 @@ private:
     float z_near = 0.1, z_far = 100;
 
     float movementSpeed = 3.0f;
+    float yawRotationSpeed = 10.0f * M_PI / 180.0;
+    float pitchRotationSpeed = 8.0f * M_PI / 180.0;
 
 public:
     FPS(Camera cam, Input& in) : camera(cam), input(in){
@@ -24,7 +26,9 @@ public:
 
     
     void Update(float dt){
-    
+        
+
+        // Translation
         if(input.IsKeyDown(sf::Keyboard::Key::A)){
             camera.position.x -= movementSpeed*dt;
         }
@@ -45,6 +49,24 @@ public:
         if(input.IsKeyDown(sf::Keyboard::Key::LShift)){
             camera.position.y -= movementSpeed*dt;
         }
+
+        // Yaw
+        if(input.IsKeyDown(sf::Keyboard::Key::Left)){
+            camera.yaw -= yawRotationSpeed * dt;
+        }
+        if(input.IsKeyDown(sf::Keyboard::Key::Right)){
+            camera.yaw += yawRotationSpeed * dt;
+        }
+
+        // Pitch
+        if(input.IsKeyDown(sf::Keyboard::Key::Up)){
+            camera.pitch += pitchRotationSpeed * dt;
+        }
+        if(input.IsKeyDown(sf::Keyboard::Key::Down)){
+            camera.pitch -= pitchRotationSpeed * dt;
+        }
+
+
         camera.UpdateTarget();
     }
     
