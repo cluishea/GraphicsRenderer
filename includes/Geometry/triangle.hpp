@@ -5,6 +5,7 @@
 #include <Math/vector2.hpp>
 #include <Math/matrix3x3.hpp>
 #include <Math/matrix4x4.hpp>
+#include <Geometry/plane.hpp>
 #include <vector>
 #include <string>
 
@@ -78,6 +79,7 @@ private:
     Color solidColor;
     Color DEFAULT_COLOR = Color{0,0,0};
 
+
 public:
 
     Triangle3D();
@@ -127,6 +129,74 @@ public:
         Vector3f normal = l1.Cross(l2);
         normal.Normalize();
         return normal;
+    }
+
+
+
+    // Clip the triangle against the given plane
+    std::vector<Triangle3D> ClipTriangle(Plane clippingPlane){
+
+        std::vector<Triangle3D> outputTriangles = std::vector<Triangle3D>{};
+        
+        std::vector <Point3f> insidePoints = std::vector <Point3f>{};
+        std::vector <Point3f> outsidePoints = std::vector <Point3f>{};
+
+        if(clippingPlane.IsOnPositiveSide(p0)){
+            insidePoints.push_back(p0);
+        }else{
+            outsidePoints.push_back(p0);
+        }
+        if(clippingPlane.IsOnPositiveSide(p1)){
+            insidePoints.push_back(p1);
+        }else{
+            outsidePoints.push_back(p1);
+        }
+        if(clippingPlane.IsOnPositiveSide(p2)){
+            insidePoints.push_back(p2);
+        }else{
+            outsidePoints.push_back(p2);
+        }
+
+        int numberOfPointsInside = insidePoints.size();
+
+        switch (numberOfPointsInside)
+        {
+        case 0:
+            break;
+
+        case 3:
+            outputTriangles.push_back(Triangle3D{p0,p1,p2});
+            break;
+        
+        case 1:
+            outputTriangles.push_back(Triangle3D{
+                insidePoints[0],
+                clippingPlane.FindIntersectionPoint(Line3f{outsidePoints[0], insidePoints[0]}),
+                clippingPlane.FindIntersectionPoint(Line3f{outsidePoints[1], insidePoints[0]})
+            });
+            break;
+
+        case 2: 
+            // Calculation of the two points
+            Point3f point1 = clippingPlane.FindIntersectionPoint(Line3f{insidePoints[0], outsidePoints[0]});
+            Point3f point2 = clippingPlane.FindIntersectionPoint(Line3f{insidePoints[1], outsidePoints[0]});
+
+            outputTriangles.push_back(Triangle3D{
+                insidePoints[0],
+                insidePoints[1],
+                point1
+            });
+
+            outputTriangles.push_back(Triangle3D{
+                insidePoints[0],
+                insidePoints[1],
+                point2
+            });
+
+
+        }
+        return outputTriangles;
+    
     }
 
     

@@ -26,7 +26,7 @@ struct Vector3f{
         a[1] = end.y - start.y;
         a[2] = end.z - start.z;
     }
-
+   \
     Vector3f operator+(Vector3f other) const{
         return {a[0]+other.a[0], a[1]+other.a[1], a[2]+other.a[2]};
     }  

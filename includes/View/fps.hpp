@@ -16,8 +16,8 @@ private:
     float z_near = 0.1, z_far = 100;
 
     float movementSpeed = 3.0f;
-    float yawRotationSpeed = 10.0f * M_PI / 180.0;
-    float pitchRotationSpeed = 8.0f * M_PI / 180.0;
+    float yawRotationSpeed = 30.0f * M_PI / 180.0;
+    float pitchRotationSpeed = 25.0f * M_PI / 180.0;
 
 public:
     FPS(Camera cam, Input& in) : camera(cam), input(in){

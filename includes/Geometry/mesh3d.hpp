@@ -38,9 +38,6 @@ public:
         // Camera transform matrix
         Matrix4x4 cameraTransform = Matrix4x4::LookAt(camera.GetPosition(), camera.GetTarget(), camera.GetUpDirection());
 
-        
-
-        
         for (auto& tri : triangles){
 
             // Brightness for the lignting
@@ -54,22 +51,30 @@ public:
 
             if(triangleNormal.Dot(vecCameraToTriangle) > 0.0f){
 
-                std::cout << "Present" << std::endl;
             
                 Triangle3D tri_transformed = tri.ReturnTransform(cameraTransform);
-                tri_transformed.ApplyTransform(perspectiveTransformMatrix);
-                tri_transformed.DivideByZ();
 
-                Triangle2D tri_2d = (Triangle2D) tri_transformed;
-                tri_2d.DenormalizeCoordinates(screenWidth, screenHeight);
-                
-                diffuse = std::max(0.0f, (  light.direction).Dot(triangleNormal));
-                brightness = std::min (1.0f, 1.f + diffuse * light.intensity);
-                
+                std::vector <Triangle3D> clippedTriangles;
+                clippedTriangles = tri_transformed.ClipTriangle(Plane{Point3f{0,0,z_near}, Vector3f{0,0,1}});
 
-                tri_2d.SetColor(tri.GetSolidColor() * brightness);
+                for(auto& clippedTri : clippedTriangles){
+                    clippedTri.ApplyTransform(perspectiveTransformMatrix);
+                    clippedTri.DivideByZ();
 
-                output.AddTriangle(tri_2d);
+
+
+                    Triangle2D tri_2d = (Triangle2D) clippedTri;
+                    tri_2d.DenormalizeCoordinates(screenWidth, screenHeight);
+                    
+                    diffuse = std::max(0.0f, (  light.direction).Dot(triangleNormal));
+                    brightness = std::min (1.0f, 1.f + diffuse * light.intensity);
+                    
+
+                    tri_2d.SetColor(tri.GetSolidColor() * brightness);
+
+                    output.AddTriangle(tri_2d);
+
+                }                
             }
         }
 
