@@ -29,6 +29,7 @@ public:
         Vector3f LoPo = Vector3f{lineStartPoint, pointOnPlane};
 
         float t = normalVector.Dot(LoPo) / normalVector.Dot(lineDirectionVector);
+        std::cout << t << std::endl;
 
         return Point3f{
             lineStartPoint.x + t * lineDirectionVector.a[0],
@@ -40,7 +41,7 @@ public:
     bool IsOnPositiveSide(Point3f point){
 
         Vector3f pointPos = Vector3f{point};
-        return (normalVector.Dot(pointPos) - dValue) > 0;
+        return (normalVector.Dot(pointPos) - dValue) >= 1e-5f;
 
     }
 

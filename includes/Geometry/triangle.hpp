@@ -135,6 +135,10 @@ public:
 
     // Clip the triangle against the given plane
     std::vector<Triangle3D> ClipTriangle(Plane clippingPlane){
+        std::cout  << " -- " << std::endl;
+        std::cout << p0.x << p0.y << p0.z << std::endl;
+        std::cout << p1.x << p1.y << p1.z << std::endl;
+        std::cout << p2.x << p2.y << p2.z << std::endl;
 
         std::vector<Triangle3D> outputTriangles = std::vector<Triangle3D>{};
         
@@ -188,8 +192,8 @@ public:
             });
 
             outputTriangles.push_back(Triangle3D{
-                insidePoints[0],
                 insidePoints[1],
+                point1,
                 point2
             });
 

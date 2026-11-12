@@ -48,6 +48,7 @@ public:
 
             Vector3f triangleNormal = tri.Normal();
             
+            // std::cout << " --- " << std::endl;
 
             if(triangleNormal.Dot(vecCameraToTriangle) > 0.0f){
 
@@ -57,11 +58,12 @@ public:
                 std::vector <Triangle3D> clippedTriangles;
                 clippedTriangles = tri_transformed.ClipTriangle(Plane{Point3f{0,0,z_near}, Vector3f{0,0,1}});
 
+
                 for(auto& clippedTri : clippedTriangles){
                     clippedTri.ApplyTransform(perspectiveTransformMatrix);
                     clippedTri.DivideByZ();
-
-
+                
+                    // std::cout << "+" << std::endl;
 
                     Triangle2D tri_2d = (Triangle2D) clippedTri;
                     tri_2d.DenormalizeCoordinates(screenWidth, screenHeight);
