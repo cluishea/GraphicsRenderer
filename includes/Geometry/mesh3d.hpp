@@ -25,7 +25,7 @@ public:
         triangles.emplace_back(triangle);
     }
 
-    Mesh2D PerspectiveTransform(int screenWidth, int screenHeight, float fieldOfView, float z_near, float z_far, Camera camera  = Camera{}, Light light = Light{}){
+    Mesh2D PerspectiveTransform(int screenWidth, int screenHeight, float fieldOfView, float z_near, float z_far, Camera camera  = Camera{}, Light light = Light{Vector3f{1,1,1},0.75}){
 
         float aspectRatio = (float) screenWidth / screenHeight;
 
@@ -38,6 +38,14 @@ public:
         // Camera transform matrix
         Matrix4x4 cameraTransform = Matrix4x4::LookAt(camera.GetPosition(), camera.GetTarget(), camera.GetUpDirection());
 
+        // Planes for viewport transform
+        std::vector<Plane> viewPortPlanes ={
+                        Plane{Point3f{-1,-1,-1}, Vector3f{1,0,0}},
+                        Plane{Point3f{-1,-1,-1}, Vector3f{0,1,0}},
+                        Plane{Point3f{1,1,1}, Vector3f{-1,0,0}},
+                        Plane{Point3f{1,1,1}, Vector3f{0,-1,0}}
+                    };
+
         for (auto& tri : triangles){
 
             // Brightness for the lignting
@@ -48,8 +56,6 @@ public:
 
             Vector3f triangleNormal = tri.Normal();
             
-            // std::cout << " --- " << std::endl;
-
             if(triangleNormal.Dot(vecCameraToTriangle) > 0.0f){
 
             
@@ -61,20 +67,25 @@ public:
 
                 for(auto& clippedTri : clippedTriangles){
                     clippedTri.ApplyTransform(perspectiveTransformMatrix);
-                    clippedTri.DivideByZ();
+                    //clippedTri.DivideByZ();
                 
-                    // std::cout << "+" << std::endl;
+                    std::vector <Triangle3D> viewportClippedTriangles = clippedTri.ClipTriangle(viewPortPlanes);
 
-                    Triangle2D tri_2d = (Triangle2D) clippedTri;
-                    tri_2d.DenormalizeCoordinates(screenWidth, screenHeight);
+                    for (auto& viewporttri : viewportClippedTriangles){
+                       
+                        Triangle2D tri_2d = (Triangle2D) viewporttri;
+                        tri_2d.DenormalizeCoordinates(screenWidth, screenHeight);
+                        
+                        diffuse = std::max(0.0f, (  light.direction).Dot(triangleNormal));
+                        brightness = std::min (1.0f, 0.4f + diffuse * light.intensity);
+                        
+
+                        tri_2d.SetColor(tri.GetSolidColor() * brightness);
+
+                        output.AddTriangle(tri_2d);
+
+                    }
                     
-                    diffuse = std::max(0.0f, (  light.direction).Dot(triangleNormal));
-                    brightness = std::min (1.0f, 1.f + diffuse * light.intensity);
-                    
-
-                    tri_2d.SetColor(tri.GetSolidColor() * brightness);
-
-                    output.AddTriangle(tri_2d);
 
                 }                
             }

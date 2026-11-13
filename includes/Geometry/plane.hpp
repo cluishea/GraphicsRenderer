@@ -41,7 +41,7 @@ public:
     bool IsOnPositiveSide(Point3f point){
 
         Vector3f pointPos = Vector3f{point};
-        return (normalVector.Dot(pointPos) - dValue) >= 1e-5f;
+        return (normalVector.Dot(pointPos) - dValue) >= -1e-6f;
 
     }
 

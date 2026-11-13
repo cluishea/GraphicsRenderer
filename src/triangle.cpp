@@ -205,9 +205,9 @@ void Triangle2D::DrawEdges(FrameBuffer& frameBuffer, Color lineColor) const{
     //std::cout << p1.x << " " << p1.y << std::endl;
     //std::cout << p2.x << " " << p2.y << std::endl;
 
-    Line2f{p0,p1}.RasterizeBresenham(frameBuffer,lineColor);
-    Line2f{p1,p2}.RasterizeBresenham(frameBuffer,lineColor);
-    Line2f{p0,p2}.RasterizeBresenham(frameBuffer,lineColor);
+    Line2f{p0,p1}.RasterizeVECGEN(frameBuffer,lineColor);
+    Line2f{p1,p2}.RasterizeVECGEN(frameBuffer,lineColor);
+    Line2f{p0,p2}.RasterizeVECGEN(frameBuffer,lineColor);
 }
 
 void Triangle2D::ApplyTransform(Matrix3x3 transformation){
@@ -260,6 +260,5 @@ Triangle3D Triangle3D::ReturnTransform(Matrix4x4 transformation){
 
     return temp;
 }
-
 
 }

@@ -26,7 +26,7 @@ struct Vector3f{
         a[1] = end.y - start.y;
         a[2] = end.z - start.z;
     }
-   \
+   
     Vector3f operator+(Vector3f other) const{
         return {a[0]+other.a[0], a[1]+other.a[1], a[2]+other.a[2]};
     }  
@@ -73,11 +73,11 @@ struct Vector3f{
         a[2] /= magnitude;
     }
 
-    float Dot(Vector3f& other) const{
+    float Dot(const Vector3f& other) const{
         return a[0] * other.a[0] + a[1] * other.a[1] + a[2] * other.a[2];
     }   
 
-    Vector3f Cross(Vector3f& other) const{
+    Vector3f Cross(const Vector3f& other) const{
         return Vector3f{
             a[1] * other.a[2] - a[2] * other.a[1],
             a[2] * other.a[0] - a[0] * other.a[2],

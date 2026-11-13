@@ -88,7 +88,6 @@ int main()
 
     gfx::Mesh3D mesh;
     mesh.AddTriangle(t1);
-    /*
     mesh.AddTriangle(t2);
     mesh.AddTriangle(t3);
     mesh.AddTriangle(t4);
@@ -100,7 +99,6 @@ int main()
     mesh.AddTriangle(t10);
     mesh.AddTriangle(t11);
     mesh.AddTriangle(t12);
-    */
 
     // gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(0);
     // mesh.ApplyTransform(yrotate);
@@ -162,7 +160,7 @@ int main()
         // Do the translation stuff
         gfx::Mesh2D mesh_2d = mesh.PerspectiveTransform(width, height, fps.GetFOV(), fps.GetZNear(), fps.GetZFar(), fps.GetCamera(), gfx::Light{});
 
-        mesh_2d.DrawMesh(frame);
+        mesh_2d.RasterizeMesh(frame);
 
         texture.update(reinterpret_cast<const std::uint8_t*> (frame.GetPixels().data()));
 

@@ -18,7 +18,7 @@ namespace gfx{
             y = y_;
         }
 
-        Vector2f(Point2f start, Point2f end = Point2f{0,0}){
+        Vector2f(Point2f start, Point2f end){
             x = end.x - start.x;
             y = end.y - start.y;
         }

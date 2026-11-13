@@ -13,6 +13,8 @@ void Line2f::RasterizeVECGEN(FrameBuffer& frameBuffer, Color lineColor, bool ras
     if((start.x < 0 || start.y < 0 || start.x >= frameBuffer.GetWidth() || start.y >= frameBuffer.GetHeight()) && !rasterizeOutside){
         return;
     }
+
+    // std::cout << "Drawing line: " << start.x << " " << start.y << ", " << end.x << " " << end.y << std::endl;
     
     // xa, xb, ya, yb are given as floating point numbers as end points, integer endpoints c and f need to be obtained in the algorithm
     // The formula for determining c and f depends upon the direction the line goes towards (right or left)

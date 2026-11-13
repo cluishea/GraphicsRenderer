@@ -96,6 +96,7 @@ public:
     // Apply the given transform, returning a Triangle2D
     Triangle3D ReturnTransform(Matrix4x4 transformMatrix);
 
+
     void DivideByZ();
 
     // Get triangle point
@@ -135,10 +136,6 @@ public:
 
     // Clip the triangle against the given plane
     std::vector<Triangle3D> ClipTriangle(Plane clippingPlane){
-        std::cout  << " -- " << std::endl;
-        std::cout << p0.x << p0.y << p0.z << std::endl;
-        std::cout << p1.x << p1.y << p1.z << std::endl;
-        std::cout << p2.x << p2.y << p2.z << std::endl;
 
         std::vector<Triangle3D> outputTriangles = std::vector<Triangle3D>{};
         
@@ -188,19 +185,40 @@ public:
             outputTriangles.push_back(Triangle3D{
                 insidePoints[0],
                 insidePoints[1],
-                point1
+                point2
             });
 
             outputTriangles.push_back(Triangle3D{
-                insidePoints[1],
-                point1,
-                point2
+                insidePoints[0],
+                point2,
+                point1
             });
 
 
         }
         return outputTriangles;
     
+    }
+
+    std::vector<Triangle3D> ClipTriangle(std::vector<Plane> clippingPlanes){
+
+        std::vector<Triangle3D> outputTriangles = std::vector<Triangle3D>{*this}; 
+
+        for(auto& clippingPlane : clippingPlanes){
+
+            std::vector<Triangle3D> clippedTrianglesThisPlane  = std::vector<Triangle3D>{};
+
+            for(auto& tri : outputTriangles){
+                std::vector <Triangle3D> temp = tri.ClipTriangle(clippingPlane);
+                clippedTrianglesThisPlane.insert(clippedTrianglesThisPlane.end(), temp.begin(), temp.end());
+            }
+
+            outputTriangles = clippedTrianglesThisPlane; 
+
+        }
+
+        return outputTriangles;
+
     }
 
     
