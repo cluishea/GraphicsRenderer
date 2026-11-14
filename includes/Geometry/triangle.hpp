@@ -108,6 +108,11 @@ public:
         };
     }
 
+    // Set solid color
+    void SetSolidColor(Color color = Color{}){
+        solidColor = color;
+    }
+
     // Get solid color
     Color GetSolidColor(){
         return solidColor;
@@ -135,7 +140,7 @@ public:
     // Align the triangle with the given vector
     void AlignWithVector(Vector3f alignVector){
         alignVector.Normalize();
-        if(Normal().Dot(alignVector) >= 0.0f){
+        if(Normal().Dot(alignVector) < 0.0f){
             Point3f temp = p1;
             p1 = p2;
             p2 = temp;            
@@ -144,7 +149,7 @@ public:
 
     // Contain the point align
     void ContainPoint(Point3f point){
-        AlignWithVector(Vector3f{Centroid(), point});
+        AlignWithVector(Vector3f{Centroid(),point});
     }
 
 

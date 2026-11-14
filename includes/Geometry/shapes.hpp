@@ -46,7 +46,7 @@ namespace Shapes{
 
         Vector3f diagonalVector = sides[0]+sides[1]+sides[2];
         for(int i = 0; i < 12; i++){
-            triangles[i].AlignWithVector(diagonalVector * ((i<6) ? -1:1));
+            triangles[i].AlignWithVector(diagonalVector * ((i<6) ? 1:-1));
         }
 
         return Mesh3D{triangles};

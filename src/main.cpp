@@ -105,6 +105,7 @@ int main()
     */
 
     gfx::Mesh3D mesh = gfx::Shapes::Sphere(gfx::Point3f{1,1,0.5}, 1);
+    mesh.SetColor(gfx::Color{255,255,0});
 
     // gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(0);
     // mesh.ApplyTransform(yrotate);
@@ -160,13 +161,13 @@ int main()
         }
         
         // Resetting the frame buffer
-        frame.Clear();
+        frame.Clear(gfx::Color{0,0,0});
 
         fps.Update(dt);
         // Do the translation stuff
         gfx::Mesh2D mesh_2d = mesh.PerspectiveTransform(width, height, fps.GetFOV(), fps.GetZNear(), fps.GetZFar(), fps.GetCamera(), gfx::Light{gfx::Point3f{1,1,1}, 0.75});
 
-        mesh_2d.DrawMesh(frame);
+        mesh_2d.RasterizeMesh(frame);
 
         texture.update(reinterpret_cast<const std::uint8_t*> (frame.GetPixels().data()));
 
