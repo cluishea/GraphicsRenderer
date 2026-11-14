@@ -142,6 +142,11 @@ public:
         }
     }
 
+    // Contain the point align
+    void ContainPoint(Point3f point){
+        AlignWithVector(Vector3f{Centroid(), point});
+    }
+
 
 
     // Clip the triangle against the given plane

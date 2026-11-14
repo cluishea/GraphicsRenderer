@@ -12,7 +12,7 @@ private:
     Camera camera;
     Input& input;
 
-    float FOV = 120;
+    float FOV = 90;
     float z_near = 0.1, z_far = 100;
 
     float movementSpeed = 3.0f;

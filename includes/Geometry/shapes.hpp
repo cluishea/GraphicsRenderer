@@ -62,6 +62,54 @@ namespace Shapes{
         return Cuboid(referencePoint,length,length,length);
     }
 
+    Mesh3D Sphere(Point3f centre, float radius){
+
+        float yawDivision = 20;
+        float pitchDivision = 10;
+
+        std::vector<std::vector<Point3f>> sampledPoints {};
+        for(int pitch = 0; pitch <= 180; pitch+=pitchDivision){
+            float phi = (float) pitch * M_PI / 180.0;
+            std::vector<Point3f> points{};
+            for(int yaw = 0; yaw <= 360; yaw += yawDivision){
+                float theta = (float) yaw * M_PI / 180.0;
+                points.push_back(Point3f{
+                    centre.x + radius * std::sinf(phi) * std::cosf(theta),
+                    centre.y + radius * std::sinf(phi) * std::sinf(theta),
+                    centre.z + radius * std::cosf(phi)
+                 });
+            }
+            sampledPoints.push_back(points);
+        }
+
+        int pitchSize = sampledPoints.size();
+        int yawSize = sampledPoints.at(0).size();
+        std::cout << pitchSize << yawSize << std::endl;
+
+        std::vector <Triangle3D> outputTriangles;
+        for(int i = 0; i < pitchSize - 1 ; i++){
+            for(int j = 0; j < yawSize - 1 ; j++){
+
+                std::cout << "1" << std::endl;
+
+                outputTriangles.push_back(Triangle3D{sampledPoints.at(i).at(j), sampledPoints.at(i).at(j+1), sampledPoints.at(i+1).at(j+1)});
+                outputTriangles.push_back(Triangle3D{sampledPoints.at(i).at(j), sampledPoints.at(i+1).at(j), sampledPoints.at(i+1).at(j+1)});
+            }
+
+            std::cout << "2" << std::endl;
+
+            outputTriangles.push_back(Triangle3D{sampledPoints.at(i).at(yawSize-1), sampledPoints.at(i).at(0), sampledPoints.at(i+1).at(0)});
+            outputTriangles.push_back(Triangle3D{sampledPoints.at(i).at(yawSize-1), sampledPoints.at(i+1).at(yawSize-1), sampledPoints.at(i+1).at(0)});
+        }
+
+        for(auto& tri: outputTriangles){
+            tri.ContainPoint(centre);
+        }
+
+        return outputTriangles;
+
+    }
+
 
 }
 
