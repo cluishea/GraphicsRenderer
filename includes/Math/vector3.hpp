@@ -68,9 +68,11 @@ struct Vector3f{
 
     void Normalize(){
         float magnitude = Magnitude();
-        a[0] /= magnitude;
-        a[1] /= magnitude;
-        a[2] /= magnitude;
+        if (magnitude > 0.f){
+            a[0] /= magnitude;
+            a[1] /= magnitude;
+            a[2] /= magnitude;
+        }
     }
 
     float Dot(const Vector3f& other) const{

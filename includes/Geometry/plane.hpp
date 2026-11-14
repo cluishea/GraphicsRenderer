@@ -29,7 +29,6 @@ public:
         Vector3f LoPo = Vector3f{lineStartPoint, pointOnPlane};
 
         float t = normalVector.Dot(LoPo) / normalVector.Dot(lineDirectionVector);
-        std::cout << t << std::endl;
 
         return Point3f{
             lineStartPoint.x + t * lineDirectionVector.a[0],

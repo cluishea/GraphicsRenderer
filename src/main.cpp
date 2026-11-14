@@ -166,7 +166,7 @@ int main()
         // Do the translation stuff
         gfx::Mesh2D mesh_2d = mesh.PerspectiveTransform(width, height, fps.GetFOV(), fps.GetZNear(), fps.GetZFar(), fps.GetCamera(), gfx::Light{gfx::Point3f{1,1,1}, 0.75});
 
-        mesh_2d.RasterizeMesh(frame);
+        mesh_2d.DrawMesh(frame);
 
         texture.update(reinterpret_cast<const std::uint8_t*> (frame.GetPixels().data()));
 

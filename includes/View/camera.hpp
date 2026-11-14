@@ -1,7 +1,6 @@
 #pragma once
 #include <Core/point.hpp>
 
-class FPS{};
 
 namespace gfx{
 
@@ -46,6 +45,11 @@ public:
 
     void SetPosition(Point3f newPos){
         position = newPos;
+        UpdateTarget();
+    }
+
+    Vector3f GetLookAtDirection(){
+        return Vector3f{position, GetTarget()};
     }
 
     void SetYaw(float y){
@@ -71,7 +75,6 @@ public:
     }
 
     friend class FPS;
-
 };
 
 
