@@ -53,28 +53,51 @@ public:
     }
 
     void SetYaw(float y){
-        yaw = y * M_PI / 180.0;
 
-        if(yaw > 360){
-            yaw -= 360;
+        if(y > 2 * M_PI){
+            y -= 2*M_PI;
         }
-        if(yaw < 360){
-            yaw += 360;
+        if(y < - 2 * M_PI){
+            y += 2*M_PI;
         }
+        yaw = y;
+
+        UpdateTarget();
+        
     }
     
     void SetPitch(float p){
-        pitch = p * M_PI / 180.0;
 
-        if(yaw > 90){
-            yaw -= 90;
+
+        if(p > M_PI / 2){
+            p = M_PI/2 - 0.001;
         }
-        if(yaw < 90){
-            yaw += 90;
-        }
+        if(p < - M_PI / 2){
+            p = - M_PI/2 + 0.001; 
+        }        
+        
+        pitch = p;
+
+        UpdateTarget();
+
     }
 
-    friend class FPS;
+    float GetYawDegree(){
+        return yaw * 180.0 / M_PI;
+    }
+
+    float GetPitchDegree(){
+        return pitch * 180.0 / M_PI;
+    }
+
+    float GetYaw(){
+        return yaw;
+    }
+
+    float GetPitch(){
+        return pitch;
+    }
+
 };
 
 

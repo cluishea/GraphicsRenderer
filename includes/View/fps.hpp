@@ -65,19 +65,19 @@ public:
 
        // Yaw
        if(input.IsKeyDown(sf::Keyboard::Key::Left)){
-           camera.yaw -= yawRotationSpeed * dt;
+           camera.SetYaw(camera.GetYaw() - yawRotationSpeed * dt);
        }
        if(input.IsKeyDown(sf::Keyboard::Key::Right)){
-           camera.yaw += yawRotationSpeed * dt;
+           camera.SetYaw(camera.GetYaw() - yawRotationSpeed * dt);
        }
 
 
        // Pitch
        if(input.IsKeyDown(sf::Keyboard::Key::Up)){
-           camera.pitch += pitchRotationSpeed * dt;
+           camera.SetPitch(camera.GetPitch() + pitchRotationSpeed * dt);
        }
        if(input.IsKeyDown(sf::Keyboard::Key::Down)){
-           camera.pitch -= pitchRotationSpeed * dt;
+           camera.SetPitch(camera.GetPitch() - pitchRotationSpeed * dt);
        }
 
 
@@ -86,7 +86,6 @@ public:
 
 
        camera.SetPosition(camera.GetPosition() + displacement);
-       camera.UpdateTarget();
    }
 
 
