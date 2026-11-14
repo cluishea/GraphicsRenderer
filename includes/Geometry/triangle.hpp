@@ -132,6 +132,16 @@ public:
         return normal;
     }
 
+    // Align the triangle with the given vector
+    void AlignWithVector(Vector3f alignVector){
+        alignVector.Normalize();
+        if(Normal().Dot(alignVector) >= 0.0f){
+            Point3f temp = p1;
+            p1 = p2;
+            p2 = temp;            
+        }
+    }
+
 
 
     // Clip the triangle against the given plane

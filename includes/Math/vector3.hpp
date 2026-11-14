@@ -85,10 +85,16 @@ struct Vector3f{
         };
     }
 
-
 };
+
+    inline Point3f operator+(Point3f refPoint, Vector3f additionVector){
+        return Point3f{
+            refPoint.x + additionVector.a[0],
+            refPoint.y + additionVector.a[1],
+            refPoint.z + additionVector.a[2]
+        };
+    }
+
 
 }
 
-// TODO :
-// Normal, Cross, Check dot, Camera class, 

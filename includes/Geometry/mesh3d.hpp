@@ -21,11 +21,13 @@ public:
         triangles = std::vector<Triangle3D>{};
     }
 
+    Mesh3D (std::vector<Triangle3D> tri) : triangles(tri){}
+
     void AddTriangle(Triangle3D triangle){
         triangles.emplace_back(triangle);
     }
 
-    Mesh2D PerspectiveTransform(int screenWidth, int screenHeight, float fieldOfView, float z_near, float z_far, Camera camera  = Camera{}, Light light = Light{Vector3f{1,1,1},0.75}){
+    Mesh2D PerspectiveTransform(int screenWidth, int screenHeight, float fieldOfView, float z_near, float z_far, Camera camera  = Camera{}, Light light = Light{Vector3f{1,2,3},0.75}){
 
         float aspectRatio = (float) screenWidth / screenHeight;
 
@@ -55,7 +57,8 @@ public:
             vecCameraToTriangle.Normalize();
 
             Vector3f triangleNormal = tri.Normal();
-            
+            triangleNormal.Normalize();
+
             if(triangleNormal.Dot(vecCameraToTriangle) > 0.0f){
 
             
@@ -76,8 +79,8 @@ public:
                         Triangle2D tri_2d = (Triangle2D) viewporttri;
                         tri_2d.DenormalizeCoordinates(screenWidth, screenHeight);
                         
-                        diffuse = std::max(0.0f, (  light.direction).Dot(triangleNormal));
-                        brightness = std::min (1.0f, 0.4f + diffuse * light.intensity);
+                        diffuse = std::max(0.0f, (light.direction).Dot(triangleNormal));
+                        brightness = std::min (1.0f, 0.5f + diffuse * light.intensity);
                         
 
                         tri_2d.SetColor(tri.GetSolidColor() * brightness);

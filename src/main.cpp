@@ -8,6 +8,7 @@
 #include <Math/matrix3x3.hpp>
 #include <Geometry/mesh2d.hpp>
 #include <Geometry/mesh3d.hpp>
+#include <Geometry/shapes.hpp>
 
 #include <Utilities/input.hpp>
 #include <View/fps.hpp>
@@ -64,6 +65,8 @@ int main()
 
     */
 
+    /*
+
     gfx::Point3f p0{1,1,0.5};
     gfx::Point3f p1{1,2,0.5};
     gfx::Point3f p2{2,2,0.5};
@@ -99,6 +102,9 @@ int main()
     mesh.AddTriangle(t10);
     mesh.AddTriangle(t11);
     mesh.AddTriangle(t12);
+    */
+
+    gfx::Mesh3D mesh = gfx::Shapes::Cube(gfx::Point3f{1,1,0.5}, 1);
 
     // gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(0);
     // mesh.ApplyTransform(yrotate);
@@ -158,9 +164,9 @@ int main()
 
         fps.Update(dt);
         // Do the translation stuff
-        gfx::Mesh2D mesh_2d = mesh.PerspectiveTransform(width, height, fps.GetFOV(), fps.GetZNear(), fps.GetZFar(), fps.GetCamera(), gfx::Light{});
+        gfx::Mesh2D mesh_2d = mesh.PerspectiveTransform(width, height, fps.GetFOV(), fps.GetZNear(), fps.GetZFar(), fps.GetCamera(), gfx::Light{gfx::Point3f{1,1,1}, 0.75});
 
-        mesh_2d.RasterizeMesh(frame);
+        mesh_2d.DrawMesh(frame);
 
         texture.update(reinterpret_cast<const std::uint8_t*> (frame.GetPixels().data()));
 
