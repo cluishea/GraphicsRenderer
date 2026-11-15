@@ -47,6 +47,12 @@ struct Vector3f{
         return {a[0]/scalar, a[1]/scalar, a[2]/scalar};;
     }
 
+    /*
+        @brief Wraps the 2D point into a Vector3f
+        @param[in] 2D point
+        @param[in] weight Temporary value for homogenous transform (Default = 1)
+        @return Vector3f containing the 2D point and homogenous factor
+    */
     static Vector3f Wrap2DPoint(Point2f point, float weight = 1.0f){
         return Vector3f{
             point.x * weight, 
@@ -55,17 +61,28 @@ struct Vector3f{
         };
     }
 
+    /*
+        @brief Unwraps the Vector3f into a 2D point
+        @return 2D point adjusted after homogenous division
+    */
     Point2f Unwrap2DPoint() const{
         return Point2f{
             a[0] / a[2], 
             a[1] / a[2]
         };
     }
-
+    
+    /*
+        @brief Returns the magnitude of the Vector3f
+        @return Magnitude of the vector
+    */
     float Magnitude() const{
         return std::powf(std::pow(a[0],2.0f) + std::pow(a[1],2.0f) + std::pow(a[2],2.0f),0.5f);
     }
 
+    /*
+        @brief Normalizes this Vector3f
+    */
     void Normalize(){
         float magnitude = Magnitude();
         if (magnitude > 0.f){
@@ -75,10 +92,20 @@ struct Vector3f{
         }
     }
 
+    /*
+        @brief Returns the dot product of this and another vector
+        @param[in] other Other Vector2f to calculate dot product with
+        @return Dot product of the two vectors
+    */
     float Dot(const Vector3f& other) const{
         return a[0] * other.a[0] + a[1] * other.a[1] + a[2] * other.a[2];
     }   
 
+    /*
+        @brief Returns the cross product of this and another vector
+        @param[in] other Other Vector2f to calculate cross product with
+        @return Cross product of the two vectors
+    */
     Vector3f Cross(const Vector3f& other) const{
         return Vector3f{
             a[1] * other.a[2] - a[2] * other.a[1],

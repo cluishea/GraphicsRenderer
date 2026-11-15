@@ -68,7 +68,7 @@ public:
            camera.SetYaw(camera.GetYaw() - yawRotationSpeed * dt);
        }
        if(input.IsKeyDown(sf::Keyboard::Key::Right)){
-           camera.SetYaw(camera.GetYaw() - yawRotationSpeed * dt);
+           camera.SetYaw(camera.GetYaw() + yawRotationSpeed * dt);
        }
 
 

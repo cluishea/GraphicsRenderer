@@ -7,8 +7,9 @@
 
 namespace gfx{
 
-// Define a 3D mesh with triangles wound clockwise
-// Could store the points and triangles separate
+/*
+    3D mesh for holding triangles representing a 3D object mesh
+*/
 class Mesh3D{
     
 private:
@@ -21,93 +22,41 @@ public:
         triangles = std::vector<Triangle3D>{};
     }
 
-    Mesh3D (std::vector<Triangle3D> tri) : triangles(tri){}
+    Mesh3D (std::vector<Triangle3D> tri) : triangles(tri){
 
-    void AddTriangle(Triangle3D triangle){
-        triangles.emplace_back(triangle);
     }
 
-    void SetColor(Color color = Color{}){
-        for(auto& tri : triangles){
-            tri.SetSolidColor(color);
-        }
-    }
+    /*
+        @brief Add a triangle in the mesh
+        @param[in] triangle Triangle to be added
+    */
+    void AddTriangle(Triangle3D triangle);
 
-    Mesh2D PerspectiveTransform(int screenWidth, int screenHeight, float fieldOfView, float z_near, float z_far, Camera camera  = Camera{}, Light light = Light{Vector3f{1,2,3},0.75}){
+    /*
+        @brief Set the solid color of the mesh
+        @param[in] color Color of the mesh
+    */
+    void SetColor(Color color = Color{});
 
-        float aspectRatio = (float) screenWidth / screenHeight;
+    /*
+        @brief Transform the Mesh3D to Mesh2D applying the perspective projection transform and camera pointat transform
+        @param[in] screenWidth Width of the screen in pixels
+        @param[in] screenHeight Height of the screen in pixels
+        @param[in] fieldOfView FOV of the camera (in Degree)
+        @param[in] z_near Near face for viewing
+        @param[in] z_far Far face for viewing
+        @param[in] camera Camera object for the transform
+        @param[in] light Light object representing lighting in the world
+        @return Mesh2D representing mesh of the triangles in screen coordinates illuminated accordingly
 
-        // Output mesh
-        Mesh2D output;
-        
-        // Perspective transform matrix
-        Matrix4x4 perspectiveTransformMatrix = Matrix4x4::PerspectiveProjection(aspectRatio,fieldOfView,z_near,z_far);
+    */
+    Mesh2D PerspectiveTransform(int screenWidth, int screenHeight, float fieldOfView, float z_near, float z_far, Camera camera  = Camera{}, Light light = Light{});
 
-        // Camera transform matrix
-        Matrix4x4 cameraTransform = Matrix4x4::LookAt(camera.GetPosition(), camera.GetTarget(), camera.GetUpDirection());
-
-        // Planes for viewport transform
-        std::vector<Plane> viewPortPlanes ={
-                        Plane{Point3f{-1,-1,-1}, Vector3f{1,0,0}},
-                        Plane{Point3f{-1,-1,-1}, Vector3f{0,1,0}},
-                        Plane{Point3f{1,1,1}, Vector3f{-1,0,0}},
-                        Plane{Point3f{1,1,1}, Vector3f{0,-1,0}}
-                    };
-
-        for (auto& tri : triangles){
-
-            // Brightness for the lignting
-            float brightness, diffuse;
-
-            Vector3f vecCameraToTriangle = Vector3f {camera.GetPosition(),tri.Centroid()};
-            vecCameraToTriangle.Normalize();
-
-            Vector3f triangleNormal = tri.Normal();
-            triangleNormal.Normalize();
-
-            if(triangleNormal.Dot(vecCameraToTriangle) > 0.0f){
-
-            
-                Triangle3D tri_transformed = tri.ReturnTransform(cameraTransform);
-
-                std::vector <Triangle3D> clippedTriangles;
-                clippedTriangles = tri_transformed.ClipTriangle(Plane{Point3f{0,0,z_near}, Vector3f{0,0,1}});
-
-
-                for(auto& clippedTri : clippedTriangles){
-                    clippedTri.ApplyTransform(perspectiveTransformMatrix);
-                    //clippedTri.DivideByZ();
-                
-                    std::vector <Triangle3D> viewportClippedTriangles = clippedTri.ClipTriangle(viewPortPlanes);
-
-                    for (auto& viewporttri : viewportClippedTriangles){
-                       
-                        Triangle2D tri_2d = (Triangle2D) viewporttri;
-                        tri_2d.DenormalizeCoordinates(screenWidth, screenHeight);
-                        
-                        diffuse = std::max(0.0f, (light.direction).Dot(triangleNormal));
-                        brightness = std::min (1.0f, 0.25f + diffuse * light.intensity);
-                        
-
-                        tri_2d.SetColor(tri.GetSolidColor() * brightness);
-
-                        output.AddTriangle(tri_2d);
-
-                    }
-                    
-
-                }                
-            }
-        }
-
-        return output;
-    }
-
-    void ApplyTransform(Matrix4x4 transformation){
-        for (auto& tri: triangles){
-            tri.ApplyTransform(transformation);
-        }
-    }
+    /*
+        @brief Applies the transform to all triangles
+        @param[in] transform 4x4 Matrix representing the transform
+    */
+    void ApplyTransform(Matrix4x4 transformation);
     
 };
 

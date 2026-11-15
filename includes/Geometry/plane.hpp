@@ -5,6 +5,9 @@
 
 namespace gfx{
 
+/*
+    Three dimensional plane
+*/
 class Plane{
 
 private:
@@ -22,6 +25,11 @@ public:
         dValue = normalVector.Dot(pointPos);
     }
 
+    /*
+        @brief Finds the intersection point of line and plane
+        @param[in] line Line3f
+        @return The intersection point (Point3f)
+    */
     Point3f FindIntersectionPoint(Line3f line){
         
         Vector3f lineDirectionVector = line.GetDirectionVector();
@@ -37,6 +45,11 @@ public:
         };
     }
 
+    /*
+        @brief Checks if the point lies on the side of plane pointed by the normal
+        @param[in] point Point3f to be checked
+        @return true/false
+    */    
     bool IsOnPositiveSide(Point3f point){
 
         Vector3f pointPos = Vector3f{point};

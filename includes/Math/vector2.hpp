@@ -43,6 +43,11 @@ namespace gfx{
             return {-x,-y};
         }
 
+        /*
+            @brief Returns the magnitude of cross product of this Vector2f with another Vector2f
+            @param[in] other Other Vector2f to calculate cross product with
+            @return Cross product of the two vectors
+        */
         float Cross(Vector2f other) const{
             return x * other.y - y * other.x;
         }

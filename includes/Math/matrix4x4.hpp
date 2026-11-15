@@ -51,14 +51,15 @@ struct Matrix4x4 {
         return Matrix4x4{result};
     }
 
-    // Perspective projection transform, outputs the normalized 2D coordinates in range -1 to 1 when multiplied by a normalized 3D point (Vector4)
+    /*
+        @brief Perspective Projection Transformation, outputs the normalized 2D coordinates in range -1 to 1 when multiplied by a normalized 3D point (Vector4)
+        @param[in] aspectRatio Screen width / Screen height
+        @param[in] FOV Field of View of camers
+        @param[in] z_near Near Clipping Plane
+        @param[in] z_far Far Clipping Plane
+        return 4x4 Matrix for perspective transform
+    */
     static Matrix4x4 PerspectiveProjection(float aspectRatio, float FOV, float z_near, float z_far){
-        /*
-            aspectRatio = Screen width / Screen height
-            FOV = Field of view
-            z_near = Near clipping plane
-            z_far = Far clipping plane
-        */
 
         float q = z_far / (z_far - z_near);
         FOV = FOV * M_PI / 180.0f;
@@ -72,7 +73,13 @@ struct Matrix4x4 {
         }};
     }
 
-    // Scaling transform
+    /*
+        @brief Scaling Matrix for 3D points
+        @param[in] sx Scale in x axis
+        @param[in] sy Scale in y axis
+        @param[in] sz Scale in z axis
+        @return 4x4 Matrix for scaling
+    */
     static Matrix4x4 Scale(float sx, float sy, float sz){
         return Matrix4x4{
             {
@@ -84,7 +91,13 @@ struct Matrix4x4 {
         };
     }
 
-    // Translation transform
+   /*
+        @brief Translation Matrix for 3D points
+        @param[in] tx Translation in x axis
+        @param[in] ty Translation in y axis
+        @param[in] tz Translation in z axis
+        @return 4x4 Matrix for translation
+    */
     static Matrix4x4 Translate(float tx, float ty, float tz){
         return Matrix4x4{
             {
@@ -96,7 +109,11 @@ struct Matrix4x4 {
         };
     }
 
-    // Rotation about the x axis
+    /*
+        @brief Rotation Matrix for 3D points in along the x axis
+        @param[in] angle Rotation Angle (Anticlockwise in degree)
+        @return 4x4 Matrix for rotation in 3D along x axis
+    */
     static Matrix4x4 RotateXAxis(float angle){
         angle = M_PI * angle / 180.0f;
         float sine = std::sinf(angle);
@@ -111,6 +128,12 @@ struct Matrix4x4 {
             }
         };
     }
+
+    /*
+        @brief Rotation Matrix for 3D points in along the y axis
+        @param[in] angle Rotation Angle (Anticlockwise in degree)
+        @return 4x4 Matrix for rotation in 3D along y axis
+    */
     static Matrix4x4 RotateYAxis(float angle){
         angle = M_PI * angle / 180.0f;
         float sine = std::sinf(angle);
@@ -126,6 +149,11 @@ struct Matrix4x4 {
         };
     }
 
+    /*
+        @brief Rotation Matrix for 3D points in along the z axis
+        @param[in] angle Rotation Angle (Anticlockwise in degree)
+        @return 4x4 Matrix for rotation in 3D along z axis
+    */
     static Matrix4x4 RotateZAxis(float angle){
         angle = M_PI * angle / 180.0f;
         float sine = std::sinf(angle);
@@ -140,8 +168,14 @@ struct Matrix4x4 {
         };
     }
 
-    // This uses z+ as forward
-    // Puts the world coordinate into the new coordinates, specified by the forward direction and translated into the eye position
+    /*
+        @brief Point At Transform : Puts the world coordinate into new coordinate system, specified by the forward direction and translated to the eye position (Uses z+ as forward direction)
+        Puts the world into the cameras view
+        @param[in] eyePoint Position of the camera/eye
+        @param[in] targetPoint Point where the eye/camera is pointing, can be at any distance
+        @param[in] upDirection Default direction taken as the world up 
+        @return 4x4 Matrix for Point At Transform ( World to Camera transform )
+    */
     static Matrix4x4 PointAt(Point3f eyePoint, Point3f targetPoint, Vector3f upDirection ){
         
         Vector3f forward{eyePoint, targetPoint};
@@ -163,7 +197,13 @@ struct Matrix4x4 {
         };
     }
 
-
+    /*
+        @brief Look At Transform : Puts the world coordinate into new coordinate system, specified by the new forward direction (Uses z+ as forward direction)
+        @param[in] eyePoint Position of the camera/eye
+        @param[in] targetPoint Point where the eye/camera is pointing, can be at any distance
+        @param[in] upDirection Default direction taken as the world up 
+        @return 4x4 Matrix for Point At Transform ( New coordinate system transform )
+    */
     static Matrix4x4 LookAt(Point3f eyePoint, Point3f targetPoint, Vector3f upDirection){
 
         Vector3f forward{eyePoint, targetPoint};
@@ -188,9 +228,6 @@ struct Matrix4x4 {
     }
 
 };
-
-
-
 
 
 inline Vector4f operator*(Vector4f vec, Matrix4x4 mat){

@@ -45,7 +45,12 @@ struct Matrix3x3 {
     
     // Translation functions implemented as homogenous coordinates
 
-    // Translate function
+    /*
+        @brief Translation Matrix
+        @param[in] tx Translation in x axis
+        @param[in] ty Translation in y axis
+        @return 3x3 Matrix for translation
+    */
     static Matrix3x3 Translate(float tx, float ty){
         return Matrix3x3{
             {
@@ -56,7 +61,12 @@ struct Matrix3x3 {
         };
     }
 
-    // Scaling function
+    /*
+        @brief Scaling Matrix
+        @param[in] sx Scale in x axis
+        @param[in] sy Scale in y axis
+        @return 3x3 Matrix for scaling
+    */
     static Matrix3x3 Scale(float sx, float sy){
         return Matrix3x3{
             {
@@ -67,7 +77,11 @@ struct Matrix3x3 {
         };
     }
 
-    // Rotation function (Anticlockwise)
+    /*
+        @brief Rotation Matrix
+        @param[in] angle Rotation Angle (Anticlockwise in degree)
+        @return 3x3 Matrix for rotation in 2D
+    */
     static Matrix3x3 Rotate(float angle){
         float radianAngle = M_PI * angle / 180.0;
         float sine = std::sinf(radianAngle);

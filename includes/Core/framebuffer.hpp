@@ -1,17 +1,17 @@
 #pragma once
+
 #include <vector>
 #include <cstdint>
+
 #include <Core/color.hpp>
-
-/*
-    Represents a frame buffer used to display the graphics onto the screen
-    Designed to work with the SFML Library of C++ but can be adapted to other graphics pipeline as well
-
-*/
 
 
 namespace gfx{
     
+/*
+    Represents a frame buffer used to display the graphics onto the screen
+    Designed to work with the SFML Library of C++ but can be adapted to other graphics pipeline as well
+*/
 class FrameBuffer{
 
 private:
@@ -27,25 +27,40 @@ public:
     // Initialized the background color of the frame buffer to solid white
     FrameBuffer(int width, int height, int xstart = 0, int ystart = 0, Color backgroundColor = Color{});
 
-    // Clears the frame buffer with given color
+    /*
+        @brief Clears the frame buffer with given color
+        @param[in] clearColor The default color for the frame buffer
+    */
     void Clear(Color clearColor = Color{});
 
-    // Sets a pixel in the frame buffer
+    /*
+        @brief Sets a pixel in the frame buffer and sets it in the left handed coordinate system
+        @param[in] x Screen x coordinate
+        @param[in] y Screen y coordinate
+        @param[in] pixelColor Color of the pixel
+    */ 
     void PutPixel(int x, int y, Color pixelColor);
 
-    // Get the width of the frame buffer
+    /*
+        @brief Get the width of the frame buffer
+        @return Width of the frame buffer
+    */
     int GetWidth() const{
         return frameWidth;
     }
 
-    // Get the height of the frame buffer
+    /*
+        @brief Get the height of the frame buffer
+        @return height of the frame buffer
+    */
     int GetHeight() const{
         return frameHeight;
     }
  
-    // Get the pixels
-    // Note: Modify this so the frame buffer has the end points of coordinate space and set the
-    // pixels accordingly, for now its ok
+    /*
+        @brief Get the pixels in the frame buffer for window drawing libraries
+        @return Vector of 32b integers with ABGR values
+    */
     std::vector<std::uint32_t> GetPixels() const;
 
 };

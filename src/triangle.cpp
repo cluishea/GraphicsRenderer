@@ -216,6 +216,12 @@ void Triangle2D::ApplyTransform(Matrix3x3 transformation){
     p2 = (Vector3f::Wrap2DPoint(p2)*transformation).Unwrap2DPoint();
 }
 
+void Triangle2D::DenormalizeCoordinates(int screenWidth, int screenHeight){
+    p0.Denormalize(screenWidth, screenHeight);
+    p1.Denormalize(screenWidth, screenHeight);
+    p2.Denormalize(screenWidth, screenHeight);
+}
+
 
 Triangle3D::Triangle3D(){}
 

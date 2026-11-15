@@ -7,7 +7,12 @@ namespace gfx{
 // This namespace contains the definitions of different 3D shapes used in the renderer
 namespace Shapes{
 
-
+    /*
+        @brief Returns a Parallelpiped
+        @param[in] referencePoint A reference corner of the parallelpiped
+        @param[in] sides std::vector<Vector3f> of size 3 containing the three adjacent edges of the referencePoint
+        @return The Mesh3D for the parallelpiped
+    */
     Mesh3D ParallelPiped(Point3f referencePoint, std::vector<Vector3f> sides){
 
         if(sides.size() != 3){
@@ -53,18 +58,37 @@ namespace Shapes{
 
     }
 
-
+    /*
+        @brief Returns a Cuboid
+        @param[in] referencePoint A reference corner of the cuboid
+        @param[in] x_length Length of the cuboid in the x axis
+        @param[in] y_length Length of the cuboid in the y axis
+        @param[in] z_length Length of the cuboid in the z axis
+        @return The Mesh3D for the cuboid
+    */
     Mesh3D Cuboid(Point3f referencePoint, float x_length, float y_length, float z_length){
         return ParallelPiped(referencePoint, {Vector3f{x_length,0,0}, Vector3f{0,y_length,0}, Vector3f{0,0,z_length}});
     }
-
+    
+    /*
+        @brief Returns a Cube
+        @param[in] referencePoint A reference corner of the cube
+        @param[in] length Length of the cube
+        @return The Mesh3D for the cuboid
+    */
     Mesh3D Cube(Point3f referencePoint, float length){
         return Cuboid(referencePoint,length,length,length);
     }
 
+    /*
+        @brief Returns a Sphere, resolution set in the code
+        @param[in] centre The centre of the sphere
+        @param[in] radius Radius of the sphere
+        @return The Mesh3D for the sphere
+    */
     Mesh3D Sphere(Point3f centre, float radius){
 
-        float yawDivision = 20;
+        float yawDivision = 10;
         float pitchDivision = 10;
 
         std::vector<std::vector<Point3f>> sampledPoints {};
@@ -84,19 +108,15 @@ namespace Shapes{
 
         int pitchSize = sampledPoints.size();
         int yawSize = sampledPoints.at(0).size();
-        std::cout << pitchSize << yawSize << std::endl;
 
         std::vector <Triangle3D> outputTriangles;
         for(int i = 0; i < pitchSize - 1 ; i++){
             for(int j = 0; j < yawSize - 1 ; j++){
 
-                std::cout << "1" << std::endl;
 
                 outputTriangles.push_back(Triangle3D{sampledPoints.at(i).at(j), sampledPoints.at(i).at(j+1), sampledPoints.at(i+1).at(j+1)});
                 outputTriangles.push_back(Triangle3D{sampledPoints.at(i).at(j), sampledPoints.at(i+1).at(j), sampledPoints.at(i+1).at(j+1)});
             }
-
-            std::cout << "2" << std::endl;
 
             outputTriangles.push_back(Triangle3D{sampledPoints.at(i).at(yawSize-1), sampledPoints.at(i).at(0), sampledPoints.at(i+1).at(0)});
             outputTriangles.push_back(Triangle3D{sampledPoints.at(i).at(yawSize-1), sampledPoints.at(i+1).at(yawSize-1), sampledPoints.at(i+1).at(0)});

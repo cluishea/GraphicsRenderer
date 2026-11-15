@@ -41,30 +41,45 @@ public:
     // Construct the triangle with three points and a solid color
     Triangle2D(Point2f p0, Point2f p1, Point2f p2, Color solidColor);
 
-    // Give a solid Color to all pixels
+   /*
+        @brief Sets a single color to all vertices of triangle
+        @param[in] color Solid fill color
+   */
     void SetColor(Color color);
 
-    // Give color as a vector
+    /*
+        @brief Set different colors to the vertices of triangle
+        @param[in] colors std::vector<Color> of size 3 with three colors
+    */
     void SetColor(std::vector<Color> colors);
 
 
-
-    // Rasterize the triangle (fill)
-    // Modes = "solid" or "interpolate"
+    /*
+        @brief Fills the triangle in the buffer
+        @param[in] frameBuffer Reference to the frame buffer
+        @param[in] mode String representing the mode of the fill ("solid" and "interpolate")
+    */
     void Rasterize(FrameBuffer& frameBuffer, std::string mode = "solid") const;
 
-    // Draw the edges
+    /*
+        @brief Draws the edges of the triangle in the buffer
+        @param[in] frameBuffer Reference to the frame buffer
+        @param[in] lineColor Color of the triangle edges
+    */
     void DrawEdges(FrameBuffer& FrameBuffer, Color lineColor = Color{0,0,0}) const;
 
-    // Apply the given transformation, input given as the transformation matrix
+    /*
+        @brief Applies the transform to this triangle
+        @param[in] transformMatrix 3x3 matrix representing the transform
+    */
     void ApplyTransform(Matrix3x3 transformMatrix);
 
-    // Denormalize the points
-    void DenormalizeCoordinates(int screenWidth, int screenHeight){
-        p0.Denormalize(screenWidth, screenHeight);
-        p1.Denormalize(screenWidth, screenHeight);
-        p2.Denormalize(screenWidth, screenHeight);
-    }
+    /*
+        @brief Denormalize the triangle coordinates for the screen size
+        @param[in] screenWidth Width of the screen in pixels
+        @param[in] screenHeight Height of the screen in pixels
+    */
+    void DenormalizeCoordinates(int screenWidth, int screenHeight);
 
 };
 
@@ -90,16 +105,28 @@ public:
     // Construct with three points and solid color
     Triangle3D(Point3f p0, Point3f p1, Point3f p2, Color solidColor);
 
-    // Apply the given transform, input is 4x4 matrix
+    /*
+        @brief Applies the transform to this triangle
+        @param[in] transformMatrix 4x4 matrix representing the transform
+    */
     void ApplyTransform(Matrix4x4 transformMatrix);
 
-    // Apply the given transform, returning a Triangle2D
+    /*
+        @brief Applies the transform to a copy this triangle and returns
+        @param[in] transformMatrix 4x4 matrix representing the transform
+        @returns Triangle3D, output of the transform
+    */
     Triangle3D ReturnTransform(Matrix4x4 transformMatrix);
 
-
+    /*
+        @brief Divide the x and y coordinates of triangle's points with the z coordinate
+    */
     void DivideByZ();
 
-    // Get triangle point
+    /*
+        @brief Returns the centroid point of the triangle
+        @return Centroid of triangle as a Point3f
+    */
     Point3f Centroid(){
         return Point3f{
             (p0.x+p1.x+p2.x)/3,
@@ -108,12 +135,18 @@ public:
         };
     }
 
-    // Set solid color
+    /*
+        @brief Sets a single color to all vertices of triangle
+        @param[in] color Solid fill color
+   */
     void SetSolidColor(Color color = Color{}){
         solidColor = color;
     }
 
-    // Get solid color
+    /*
+        @brief Returns the solid color of the triangle
+        @return The solid color of the triangle
+    */
     Color GetSolidColor(){
         return solidColor;
     }
@@ -127,7 +160,10 @@ public:
         };
     }
 
-    // Get the normal of the triangle (Assumed to be wound clockwise)
+    /*
+        @brief Returns the normalized normal of the triangle
+        @return Vector3f representing the normal of triangle
+    */
     Vector3f Normal(){
         Vector3f l1 = Vector3f {p0,p1};
         Vector3f l2 = - Vector3f {p0,p2};
@@ -137,7 +173,10 @@ public:
         return normal;
     }
 
-    // Align the triangle with the given vector
+    /*
+        @brief Align the triangle with the given vector for fixing the winding order
+        @param[in] alignVector Vector3f to align the normal of triangle with
+    */
     void AlignWithVector(Vector3f alignVector){
         alignVector.Normalize();
         if(Normal().Dot(alignVector) < 0.0f){
@@ -147,14 +186,22 @@ public:
         }
     }
 
-    // Contain the point align
+    /*
+        @brief Align the triangle such that the direction of normal contains the point
+        @param[in] point Point3f that the normal has to point to
+    */
     void ContainPoint(Point3f point){
         AlignWithVector(Vector3f{Centroid(),point});
     }
 
 
 
-    // Clip the triangle against the given plane
+    
+    /*
+        @brief Clip the triangle against a plane
+        @param[in] clippingPlane Plane used to clip the triangle
+        @return std::vector<Triangle3D> containing the clipped triangles for this triangle
+    */
     std::vector<Triangle3D> ClipTriangle(Plane clippingPlane){
 
         std::vector<Triangle3D> outputTriangles = std::vector<Triangle3D>{};
@@ -220,6 +267,11 @@ public:
     
     }
 
+    /*
+        @brief Clip the triangle against multiple
+        @param[in] clippingPlanes Vector of planes used to clip the triangle
+        @return std::vector<Triangle3D> containing the clipped triangles for this triangle
+    */
     std::vector<Triangle3D> ClipTriangle(std::vector<Plane> clippingPlanes){
 
         std::vector<Triangle3D> outputTriangles = std::vector<Triangle3D>{*this}; 

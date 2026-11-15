@@ -11,6 +11,10 @@ namespace gfx{
 
         }
 
+        /*
+            @brief Converts the color to ABGR format
+            @return The color in ABGR format as 32 bit integer
+        */
         constexpr std::uint32_t ToRGBA() const{
             return ((static_cast<std::uint32_t>(a)<< 24) | (static_cast<std::uint32_t>(b) << 16) | (static_cast<std::uint32_t>(g) << 8) | (static_cast<std::uint32_t>(r)));
         }

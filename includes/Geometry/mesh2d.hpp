@@ -4,7 +4,9 @@
 
 namespace gfx{
 
-// Define a 2D mesh with triangles wound clockwise
+/*
+    2D mesh for holding triangles representing a mesh
+*/
 class Mesh2D{
     
 private:
@@ -17,27 +19,31 @@ public:
         triangles = std::vector<Triangle2D>{};
     }
 
-    void AddTriangle(Triangle2D triangle){
-        triangles.emplace_back(triangle);
-    }
+    /*
+        @brief Add a triangle in the mesh
+        @param[in] triangle Triangle to be added
+    */
+    void AddTriangle(Triangle2D triangle);
 
-    void DrawMesh(FrameBuffer& frameBuffer, Color lineColor = Color{0,0,0}){
-        for(auto& tri : triangles){
-            tri.DrawEdges(frameBuffer, lineColor);
-        }
-    }
+    /*
+        @brief Puts the Mesh2D in the frame buffer by drawing the triangle edges
+        @param[in] frameBuffer Reference to the frame buffer
+        @param[in] lineColor Color of the triangle edges
+    */
+    void DrawMesh(FrameBuffer& frameBuffer, Color lineColor = Color{0,0,0});
 
-    void RasterizeMesh(FrameBuffer& frameBuffer){
-        for(auto& tri : triangles){
-            tri.Rasterize(frameBuffer,"solid");
-        }
-    }
+    /*
+        @brief Puts the Mesh2D in the frame buffer by filling the triangle
+        @param[in] frameBuffer Reference to the frame buffer
+    */
+    void RasterizeMesh(FrameBuffer& frameBuffer);
 
-    void DenormalizeCoordinates(int screenWidth, int screenHeight){
-        for (auto& tri:triangles){
-            tri.DenormalizeCoordinates(screenWidth, screenHeight);
-        }
-    }
+    /*
+        @brief Denormalizes the coordinates of the triangles of the mesh tto the Screen coordinates
+        @param[in] screenWidth Width of the screen in pixels
+        @param[in] screenHeight Height of the screen in pixels
+    */  
+    void DenormalizeCoordinates(int screenWidth, int screenHeight);
 
 };
 
