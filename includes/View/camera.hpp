@@ -16,6 +16,10 @@ private:
 
     Vector3f upDirection;
 
+
+    float FOV = 90;
+    float z_near = 0.1, z_far = 100;
+
     void UpdateTarget(){
         target.x = std::sinf(yaw) * std::cosf(pitch) + position.x;
         target.y = std::sinf(pitch) + position.y;
@@ -130,6 +134,16 @@ public:
     */
     float GetPitch(){
         return pitch;
+    }
+    
+    float GetFOV(){
+        return FOV;
+    }
+    float GetZNear(){
+        return z_near;
+    }
+    float GetZFar(){
+        return z_far;
     }
 
 };

@@ -88,8 +88,8 @@ namespace Shapes{
     */
     Mesh3D Sphere(Point3f centre, float radius){
 
-        float yawDivision = 10;
-        float pitchDivision = 10;
+        float yawDivision = 5;
+        float pitchDivision = 5;
 
         std::vector<std::vector<Point3f>> sampledPoints {};
         for(int pitch = 0; pitch <= 180; pitch+=pitchDivision){
@@ -128,6 +128,184 @@ namespace Shapes{
 
         return outputTriangles;
 
+    }
+
+    /*
+        @brief Returns a 3D polygon
+        @param[in] points Points of the polygon in clockwise order
+        @param[in] bothSides Allow Both sided polygon (Default = true)
+        @param[in] includedPoint Point to include for one sided polygon
+        @return 3D polygon
+    */
+    Mesh3D Polygon(std::vector<Point3f> points, bool bothSides = true, Point3f includedPoint = Point3f{}){
+
+        std::vector<Triangle3D> triangles;
+        int size = points.size();
+        for(int i = 1; i < size - 1; i++){
+            triangles.push_back(
+                Triangle3D{
+                    points[0], points[i], points[i+1]
+                }
+            );
+            if(bothSides){
+                triangles.push_back(
+                    Triangle3D{
+                        points[0], points[i+1], points[i]
+                    }
+                );
+            }
+        }
+
+        if(!bothSides){
+            for(auto& tri : triangles){
+                tri.ContainPoint(includedPoint);
+            }
+        }
+        return Mesh3D{triangles};
+    }
+
+    /*
+        @brief Returns a Cylinder, axis along the z axis
+        @param[in] centre Centre of the circle
+        @param[in] Radius of circle
+        @return Circle of given radius and centre
+    */
+    Mesh3D Circle(Point3f centre, float radius, bool bothSides = true, Point3f containedPoint = Point3f{}){
+
+        std::vector<Triangle3D> triangles;
+
+        float yawDivision = 10;
+
+        std::vector <Point3f> sampledPoints;
+
+        for(int yaw = 0; yaw < 360; yaw += yawDivision){
+            float theta = (float) yaw * M_PI / 180.0;
+            sampledPoints.push_back(Point3f{
+                centre.x + radius * std::cosf(theta),
+                centre.y + radius * std::sinf(theta),
+                centre.z
+            });
+        }
+
+        int pointsSize = sampledPoints.size();
+        
+        for(int i = 0; i + 1< pointsSize; i++){
+            triangles.push_back( Triangle3D {centre, sampledPoints[i], sampledPoints[i+1] });
+            if (bothSides){
+                triangles.push_back( Triangle3D { centre, sampledPoints[i+1], sampledPoints[i]  });
+            }
+        }
+        triangles.push_back( Triangle3D {centre, sampledPoints[pointsSize-1], sampledPoints[0] });
+        triangles.push_back( Triangle3D {centre, sampledPoints[0], sampledPoints[pointsSize-1] });
+
+        if(!bothSides){
+            for(auto& tri : triangles){
+                tri.ContainPoint(containedPoint);
+            }
+        }
+
+        return Mesh3D{triangles};
+    }
+
+
+
+    /*
+        @brief Returns a Cylinder, axis along the z axis
+        @param[in] referencePoint Centre of an end circle of cylinder
+        @param[in] Radius of cylinder
+        @param[in] Length of cylinder
+        @return Cylinder of given length and radius
+    */
+    Mesh3D Cylinder(Point3f referencePoint, float radius, float length){
+
+        std::vector<Triangle3D> triangles;
+
+        float yawDivision = 10;
+
+        std::vector <Point3f> sampledPointsNear;
+        std::vector <Point3f> sampledPointsFar;
+
+        for(int yaw = 0; yaw < 360; yaw += yawDivision){
+            float theta = (float) yaw * M_PI / 180.0;
+            sampledPointsNear.push_back(Point3f{
+                referencePoint.x + radius * std::cosf(theta),
+                referencePoint.y + radius * std::sinf(theta),
+                referencePoint.z
+            });
+            sampledPointsFar.push_back(Point3f{
+                referencePoint.x + radius * std::cosf(theta),
+                referencePoint.y + radius * std::sinf(theta),
+                referencePoint.z + length
+            });
+        }
+
+        int pointsSize = sampledPointsFar.size();
+        
+        for(int i = 0; i + 1< pointsSize; i++){
+            triangles.push_back( Triangle3D {sampledPointsNear[i], sampledPointsNear[i+1], sampledPointsFar[i] });
+            triangles.push_back( Triangle3D {sampledPointsNear[i+1], sampledPointsFar[i+1], sampledPointsFar[i] });
+        }
+        triangles.push_back( Triangle3D {sampledPointsNear[pointsSize-1], sampledPointsNear[0], sampledPointsFar[pointsSize-1] });
+        triangles.push_back( Triangle3D {sampledPointsNear[0], sampledPointsFar[0], sampledPointsFar[pointsSize-1] });
+        
+        Point3f containedPoint{referencePoint.x, referencePoint.y, referencePoint.z + length / 2.f};   
+
+        std::vector<Triangle3D> circle1 = Circle(referencePoint, radius, false, containedPoint).GetTriangles();
+        std::vector<Triangle3D> circle2 = Circle(Point3f{referencePoint.x, referencePoint.y, referencePoint.z + length}, radius, false, containedPoint).GetTriangles();
+
+        triangles.insert(triangles.end(), circle1.begin(), circle1.end());
+        triangles.insert(triangles.end(), circle2.begin(), circle2.end());
+
+        for(auto& tri:triangles){
+            tri.ContainPoint(containedPoint);
+        }
+
+        return Mesh3D{triangles};
+    }
+
+    /*
+        @brief Returns a Cone, axis along the z axis
+        @param[in] referencePoint Centre of the base circle of the cone
+        @param[in] Radius of cone
+        @param[in] Length of cone
+        @return Cone of given dimentions
+    */
+    Mesh3D Cone(Point3f referencePoint, float radius, float length){
+
+        std::vector<Triangle3D> triangles;
+
+        float yawDivision = 10;
+
+        std::vector <Point3f> sampledPoints;
+
+        for(int yaw = 0; yaw < 360; yaw += yawDivision){
+            float theta = (float) yaw * M_PI / 180.0;
+            sampledPoints.push_back(Point3f{
+                referencePoint.x + radius * std::cosf(theta),
+                referencePoint.y + radius * std::sinf(theta),
+                referencePoint.z
+            });
+        }
+
+        int pointsSize = sampledPoints.size();
+        Point3f tipPoint = Point3f{referencePoint.x, referencePoint.y, referencePoint.z+length};
+
+        for(int i = 0; i + 1< pointsSize; i++){
+            triangles.push_back( Triangle3D {tipPoint, sampledPoints[i], sampledPoints[i+1] });
+        }
+        triangles.push_back( Triangle3D {tipPoint, sampledPoints[pointsSize-1], sampledPoints[0] });
+        
+        Point3f containedPoint{referencePoint.x, referencePoint.y, referencePoint.z + length / 2.f};   
+
+        std::vector<Triangle3D> circle1 = Circle(referencePoint, radius, false, containedPoint).GetTriangles();
+
+        triangles.insert(triangles.end(), circle1.begin(), circle1.end());
+
+        for(auto& tri:triangles){
+            tri.ContainPoint(containedPoint);
+        }
+
+        return Mesh3D{triangles};
     }
 
 

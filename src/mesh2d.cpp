@@ -25,6 +25,12 @@ void Mesh2D::DenormalizeCoordinates(int screenWidth, int screenHeight){
     }
 }
 
+void Mesh2D::ExtendMesh(Mesh2D otherMesh){
+    triangles.insert(triangles.end(), otherMesh.triangles.begin(), otherMesh.triangles.end());
+}
 
+void Mesh2D::AddTriangles(std::vector<Triangle2D> newTriangles){
+    triangles.insert(triangles.end(), newTriangles.begin(), newTriangles.end());
+}
 
 }

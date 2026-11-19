@@ -12,8 +12,6 @@ private:
     Camera camera;
     Input& input;
 
-    float FOV = 90;
-    float z_near = 0.1, z_far = 100;
 
     float movementSpeed = 3.0f;
     float yawRotationSpeed = 30.0f * M_PI / 180.0;
@@ -89,19 +87,8 @@ public:
    }
 
 
-    
-    
-    float GetFOV(){
-        return FOV;
-    }
-    float GetZNear(){
-        return z_near;
-    }
-    float GetZFar(){
-        return z_far;
-    }
 
-    Camera GetCamera(){
+    Camera& GetCamera(){
         return camera;
     }
 

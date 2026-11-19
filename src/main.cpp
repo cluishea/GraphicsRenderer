@@ -12,6 +12,7 @@
 
 #include <Utilities/input.hpp>
 #include <View/fps.hpp>
+#include <View/world.hpp>
 
 #include <iostream>
 
@@ -104,8 +105,17 @@ int main()
     mesh.AddTriangle(t12);
     */
 
-    gfx::Mesh3D mesh = gfx::Shapes::Sphere(gfx::Point3f{1,1,0.5}, 1);
-    mesh.SetColor(gfx::Color{255,255,0});
+    gfx::FPS fps {gfx::Camera{gfx::Point3f{0,0,-1}}, input};
+
+
+    gfx::Mesh3D cone = gfx::Shapes::Cone({0,0,0},1,3);
+    cone.SetColor(gfx::Color{255,255,0});
+    gfx::Mesh3D cuboid = gfx::Shapes::Cuboid({0,0,0},1,2,5);
+    cuboid.SetColor(gfx::Color{255,0,0});
+
+    gfx::World world {{cone,cuboid}, fps.GetCamera()};
+    world.ApplyTransform(gfx::Matrix4x4::RotateXAxis(45));
+
 
     // gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(0);
     // mesh.ApplyTransform(yrotate);
@@ -121,7 +131,6 @@ int main()
     //t.Rasterize(frame);
     // Fix the issue where 3D to 2D operation messes up the winding order of triangles
 
-    gfx::FPS fps {gfx::Camera{gfx::Point3f{0,0,-1}}, input};
 
 
     sf::RenderWindow window(
@@ -161,11 +170,11 @@ int main()
         }
         
         // Resetting the frame buffer
-        frame.Clear(gfx::Color{0,0,0});
+        frame.Clear(gfx::Color{});
 
         fps.Update(dt);
         // Do the translation stuff
-        gfx::Mesh2D mesh_2d = mesh.PerspectiveTransform(width, height, fps.GetFOV(), fps.GetZNear(), fps.GetZFar(), fps.GetCamera(), gfx::Light{gfx::Point3f{1,1,1}, 0.75});
+        gfx::Mesh2D mesh_2d = world.ConvertToScreen(width,height);
 
         mesh_2d.RasterizeMesh(frame);
 

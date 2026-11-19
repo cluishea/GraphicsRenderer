@@ -33,6 +33,12 @@ public:
     void AddTriangle(Triangle3D triangle);
 
     /*
+        @brief Get the triangles in mesh
+        @return std::vector<Triangle3D> Vector of triangles
+    */
+    std::vector<Triangle3D> GetTriangles();
+
+    /*
         @brief Set the solid color of the mesh
         @param[in] color Color of the mesh
     */
@@ -57,6 +63,18 @@ public:
         @param[in] transform 4x4 Matrix representing the transform
     */
     void ApplyTransform(Matrix4x4 transformation);
+
+    /*
+        @brief Extend the mesh with another mesh
+        @param[in] anotherMesh Anther Mesh3D object
+    */
+    void ExtendMesh(Mesh3D otherMesh);
+
+    /*
+        @brief Wind the triangles of the mesh so that it contains a point
+        @param[in] includedPoint Point3f to be included by the mesh
+    */
+    void IncludePoint(Point3f includedPoint);
     
 };
 

@@ -89,8 +89,18 @@ void Mesh3D::ApplyTransform(Matrix4x4 transformation){
     }
 }
 
+std::vector<Triangle3D> Mesh3D::GetTriangles(){
+    return triangles;
+}
 
+void Mesh3D::ExtendMesh(Mesh3D otherMesh){
+    triangles.insert(triangles.end(), otherMesh.triangles.begin(), otherMesh.triangles.end());
+}
 
-
+void Mesh3D::IncludePoint(Point3f includedPoint){
+    for(auto& tri : triangles){
+        tri.ContainPoint(includedPoint);
+    }
+}
 
 }

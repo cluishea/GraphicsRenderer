@@ -45,6 +45,17 @@ public:
     */  
     void DenormalizeCoordinates(int screenWidth, int screenHeight);
 
+    /*
+        @brief Add triangles into the mesh
+        @param[in] addedTriangles List of triangles to add to the mesh
+    */
+    void AddTriangles(std::vector<Triangle2D> newTriangles);
+
+    /*
+        @brief Extend the mesh with another mesh
+        @param[in] anotherMesh Anther Mes2D object
+    */
+    void ExtendMesh(Mesh2D otherMesh);
 };
 
 }
