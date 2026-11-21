@@ -177,15 +177,20 @@ void Triangle2D::Rasterize(FrameBuffer& frameBuffer, std::string mode) const {
             if(w0 >= 0 && w1 >= 0 && w2 >= 0){
                 //std::cout << "Did" << std::endl;
 
+                float alpha = w0 / triangleArea;
+                float beta = w1 / triangleArea;
+                float gamma = w2 / triangleArea;
+
+                float depth = w0 * p0.inv_z_depth + w1 * p1.inv_z_depth + w2 * p2.inv_z_depth;
+                depth /= triangleArea;
+
                 if(interpolate){
-                    float alpha = w0 / triangleArea;
-                    float beta = w1 / triangleArea;
-                    float gamma = w2 / triangleArea;
+                    
                     // std::cout << alpha << " " << beta << " " << gamma << std::endl;
                     fillColor = c0 * alpha + c1 * beta + c2 * gamma;
                     // std::cout << std::hex << fillColor.ToRGBA() << std::endl;
                 }
-                frameBuffer.PutPixel(i,j,fillColor);
+                frameBuffer.PutPixel(i,j,fillColor, depth);
             }
 
             w0+=delta_w0_column;

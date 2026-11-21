@@ -308,6 +308,49 @@ namespace Shapes{
         return Mesh3D{triangles};
     }
 
+    /*
+        @brief Return a prism shape with the faces given, axis being the Z axis
+        @param[in] facePoints List of points of one face
+        @param[in] length Length of the prism
+        @return Mesh3D object of the prism
+    */
+    Mesh3D Prism(std::vector<Point3f> facePoints, float length){
+
+        std::vector<Point3f> oppositeFacePoints;
+        Point3f includedPoint{};
+
+        int numPoints = facePoints.size();
+
+        for(int i = 0; i < numPoints; i++){
+            oppositeFacePoints.push_back(Point3f{facePoints[i].x, facePoints[i].y, facePoints[i].z + length});
+            includedPoint = includedPoint + facePoints[i];
+        }
+        includedPoint = includedPoint / facePoints.size();
+        includedPoint.z += length/2;
+
+        std::vector<Triangle3D> triangles;
+
+        std::vector <Triangle3D> nearFaceTriangles = Polygon(facePoints, false, includedPoint).GetTriangles();
+        std::vector <Triangle3D> farFaceTriangles = Polygon(oppositeFacePoints, false, includedPoint).GetTriangles();
+
+        for(int i = 0; i < numPoints-1; i++){
+            triangles.push_back(Triangle3D{facePoints[i], facePoints[i+1], oppositeFacePoints[i]});
+            triangles.push_back(Triangle3D{oppositeFacePoints[i], oppositeFacePoints[i+1], facePoints[i+1]});
+        }
+        triangles.push_back(Triangle3D{facePoints[numPoints-1], facePoints[0], oppositeFacePoints[numPoints-1]});
+        triangles.push_back(Triangle3D{oppositeFacePoints[numPoints-1], oppositeFacePoints[0], facePoints[0]});
+
+        triangles.insert(triangles.end(), nearFaceTriangles.begin(), nearFaceTriangles.end());
+        triangles.insert(triangles.end(), farFaceTriangles.begin(), farFaceTriangles.end());
+
+        for(auto& tri : triangles){
+            tri.ContainPoint(includedPoint);
+        }
+
+        return Mesh3D{triangles};
+
+    }
+
 
 }
 

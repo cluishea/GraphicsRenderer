@@ -112,9 +112,13 @@ int main()
     cone.SetColor(gfx::Color{255,255,0});
     gfx::Mesh3D cuboid = gfx::Shapes::Cuboid({0,0,0},1,2,5);
     cuboid.SetColor(gfx::Color{255,0,0});
+    cuboid.ApplyTransform(gfx::Matrix4x4::Translate(3,0,0));
+
+    //gfx::Mesh3D prism = gfx::Shapes::Prism({{0,0,0},{0,1,0},{1,1,0},{2,0,0}},5);
+    //prism.SetColor(gfx::Color{255,255,255});
 
     gfx::World world {{cone,cuboid}, fps.GetCamera()};
-    world.ApplyTransform(gfx::Matrix4x4::RotateXAxis(45));
+    //world.ApplyTransform(gfx::Matrix4x4::RotateXAxis(45));
 
 
     // gfx::Matrix4x4 yrotate = gfx::Matrix4x4::RotateXAxis(0);

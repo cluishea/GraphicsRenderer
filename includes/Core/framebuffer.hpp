@@ -16,6 +16,7 @@ class FrameBuffer{
 
 private:
     std::vector<std::uint32_t> frameBuffer;
+    std::vector<float> depthBuffer;
     
     // Height and width of the framebuffer (Number of rows and columns)
     int frameWidth, frameHeight; 
@@ -38,8 +39,9 @@ public:
         @param[in] x Screen x coordinate
         @param[in] y Screen y coordinate
         @param[in] pixelColor Color of the pixel
+        @param[in] z_depth Parameter for ordering the triangles (Default = 0)
     */ 
-    void PutPixel(int x, int y, Color pixelColor);
+    void PutPixel(int x, int y, Color pixelColor, float z_depth = 0);
 
     /*
         @brief Get the width of the frame buffer
